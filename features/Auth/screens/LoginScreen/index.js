@@ -96,6 +96,9 @@ function LoginScreen(props) {
                                     }
                                 } catch (error) {
                                     console.log(`${sTag} login error: ${error.message}`);
+                                    Utils.toast({
+                                        message: t("Log in failed")
+                                    })
                                 }
                                 AppLoadingHelper.current.hide();
                             }}>

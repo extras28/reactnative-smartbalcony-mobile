@@ -8,6 +8,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import SignUpScreen from 'features/Auth/screens/SignUpScreen/index';
+import LaunchScreen from 'features/LaunchScreen/index';
 import AppLoading from 'general/components/AppLoading/index';
 import ScaleToast, { ScaleToastRef } from 'general/components/AppToast/index';
 import { navigationRef } from 'general/helpers/NavigationHelper';
@@ -57,9 +58,16 @@ function RootComponent() {
 }
 
 function AppNavigator() {
+    //TODO: initialRouteName
+    let initialRouteName = AppData.screens.LAUNCH_SCREEN;
     return (
         <NavigationContainer ref={navigationRef}>
-            <Stack.Navigator>
+            <Stack.Navigator initialRouteName={initialRouteName}>
+                <Stack.Screen
+                    name={AppData.screens.LAUNCH_SCREEN}
+                    component={LaunchScreen}
+                    options={{ animationEnabled: true, header: () => null }}
+                />
                 <Stack.Screen
                     name={AppData.screens.LOGIN_SCREEN}
                     component={LoginScreen}

@@ -1,5 +1,6 @@
 // Util functions
 import { ScaleToastRef } from 'general/components/AppToast/index';
+import AppData from 'general/constants/AppData';
 import { sha256 } from 'js-sha256';
 import _ from 'lodash';
 import moment from 'moment';
@@ -194,6 +195,12 @@ const Utils = {
      */
     toast(params) {
         ScaleToastRef.current?.show(params);
+    },
+    goToLogin(navigation) {
+        navigation.reset({
+            routes: [{ name: AppData.screens.LOGIN_SCREEN }],
+            index: 0,
+        });
     },
 };
 

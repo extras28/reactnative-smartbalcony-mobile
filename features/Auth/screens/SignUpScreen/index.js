@@ -1,38 +1,36 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {
-    View,
-    Text,
-    KeyboardAvoidingView,
-    StatusBar,
-    ImageBackground,
-    TouchableOpacity,
-    Image,
-} from 'react-native';
+import authApi from 'api/authApi';
+import { FastField, Formik } from 'formik';
+import { AppLoadingHelper } from 'general/components/AppLoading/index';
 import BaseScreenView from 'general/components/BaseScreenView/index';
+import DefaultTextInput from 'general/components/Forms/DefaultTextInput/index';
+import SubmitButton from 'general/components/SubmitButton/index';
 import AppColor from 'general/constants/AppColor';
 import AppData from 'general/constants/AppData';
 import AppResource from 'general/constants/AppResource';
-import { useTranslation } from 'react-i18next';
-import { FastField, Formik } from 'formik';
-import DefaultTextInput from 'general/components/Forms/DefaultTextInput/index';
 import GlobalStyle from 'general/constants/GlobalStyle';
-import * as Yup from 'yup';
-import { unwrapResult } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
-import { AppLoadingHelper } from 'general/components/AppLoading/index';
 import NavigationHelper from 'general/helpers/NavigationHelper';
-import SubmitButton from 'general/components/SubmitButton/index';
-import _ from 'lodash';
-import authApi from 'api/authApi';
 import Utils from 'general/utils/Utils';
+import _ from 'lodash';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import {
+    Image,
+    ImageBackground,
+    KeyboardAvoidingView,
+    ScrollView,
+    StatusBar,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
+import { useDispatch } from 'react-redux';
+import * as Yup from 'yup';
 
 SignUpScreen.propTypes = {};
 
 function SignUpScreen(props) {
     // MARK --- Params: ---
     const { t } = useTranslation();
-    const dispatch = useDispatch();
 
     return (
         <BaseScreenView
@@ -49,10 +47,10 @@ function SignUpScreen(props) {
                     style={{
                         flex: 1,
                     }}>
-                    <View
+                    <ScrollView
                         style={{
                             paddingHorizontal: 40,
-                            paddingTop: 140,
+                            paddingTop: 100,
                         }}>
                         <Text
                             style={{
@@ -68,15 +66,21 @@ function SignUpScreen(props) {
                                 textAlign: 'center',
                                 fontSize: 15,
                                 color: '#A5AFA8',
-                                marginBottom: 40,
+                                marginBottom: 20,
                             }}>
                             {t('Create your new account')}
                         </Text>
 
                         <View>
                             <Formik
-                                initialValues={{ email: '', password: '', confirmPassword: '' }}
+                                initialValues={{
+                                    email: '',
+                                    password: '',
+                                    confirmPassword: '',
+                                    fullname: '',
+                                }}
                                 validationSchema={Yup.object({
+                                    fullname: Yup.string().required(t('Fullname is required')),
                                     email: Yup.string().required(t('Email is required')),
                                     password: Yup.string().required(t('Password is required')),
                                     confirmPassword: Yup.string()
@@ -116,6 +120,37 @@ function SignUpScreen(props) {
                                             flexDirection: 'column',
                                         }}>
                                         <View style={{ marginVertical: 20 }}>
+                                            <FastField name="fullname">
+                                                {({ field, form, meta }) => (
+                                                    <View
+                                                        style={{
+                                                            ...GlobalStyle.Margin.bottom(),
+                                                        }}>
+                                                        <DefaultTextInput
+                                                            label={t('Fullname')}
+                                                            placeholder={t('Enter your fullname')}
+                                                            value={field.value}
+                                                            onChange={value => {
+                                                                form.setFieldValue(
+                                                                    field.name,
+                                                                    value,
+                                                                );
+                                                            }}
+                                                            onFocus={() => {
+                                                                form.setFieldTouched(
+                                                                    field.name,
+                                                                    true,
+                                                                );
+                                                            }}
+                                                            enableCheckValid
+                                                            required
+                                                            isValid={_.isEmpty(meta.error)}
+                                                            isTouched={meta.touched}
+                                                            feedbackText={meta.error}
+                                                        />
+                                                    </View>
+                                                )}
+                                            </FastField>
                                             <FastField name="email">
                                                 {({ field, form, meta }) => (
                                                     <View
@@ -251,8 +286,8 @@ function SignUpScreen(props) {
                                             <View
                                                 style={{
                                                     display: 'flex',
-                                                    flexDirection: 'row',
-                                                    justifyContent: 'center',
+                                                    flexDirection: 'column',
+                                                    alignItems: 'center',
                                                     marginTop: 10,
                                                     color: '#666666',
                                                 }}>
@@ -278,7 +313,7 @@ function SignUpScreen(props) {
                                 )}
                             </Formik>
                         </View>
-                    </View>
+                    </ScrollView>
                 </ImageBackground>
             </KeyboardAvoidingView>
         </BaseScreenView>

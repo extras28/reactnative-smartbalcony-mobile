@@ -8,13 +8,12 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AppLoading from 'general/components/AppLoading/index';
-import AppToast from 'general/components/AppToast/index';
+import ScaleToast, { ScaleToastRef } from 'general/components/AppToast/index';
 import { navigationRef } from 'general/helpers/NavigationHelper';
 import React from 'react';
 import { I18nextProvider } from 'react-i18next';
 import 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ToastProvider } from 'react-native-toast-notifications';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import i18n from './app/i18n';
@@ -31,9 +30,10 @@ function App(): JSX.Element {
             <Provider store={store}>
                 <PersistGate persistor={persistor}>
                     <I18nextProvider i18n={i18n}>
-                        <ToastProvider>
-                            <AppNavigator />
-                        </ToastProvider>
+                        {/* navigator */}
+                        <AppNavigator />
+                        {/* root component */}
+                        <RootComponent />
                     </I18nextProvider>
                 </PersistGate>
             </Provider>
@@ -47,6 +47,8 @@ function App(): JSX.Element {
 function RootComponent() {
     return (
         <>
+            <ScaleToast toastRef={ScaleToastRef} />
+
             <AppLoading />
             {/* <AlertDialog alertRef={alertRef} /> */}
         </>

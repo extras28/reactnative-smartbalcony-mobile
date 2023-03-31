@@ -1,42 +1,85 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { ToastProvider, useToast } from 'react-native-toast-notifications';
+import AppColor from 'general/constants/AppColor';
+import AppData from 'general/constants/AppData';
+import AppStyle from 'general/constants/AppStyle';
+import _ from 'lodash';
+import React, { createRef, useEffect, useState } from 'react';
+import { Modal, Text, TouchableOpacity, View } from 'react-native';
 
-AppToast.propTypes = {};
+/**
+ * @type {React.MutableRefObject<ScaleToast>}
+ */
+export const ScaleToastRef = createRef();
 
-function AppToast(props) {
-    // MARK --- Params: ---
-    const { children } = props;
-    const toast = useToast();
-    // MARK --- Hooks: ---
+/**
+ * @author hieubt
+ * @description default duration 3000
+ * @typedef Props
+ * @property {React.MutableRefObject<ScaleToast>} toastRef
+ * @param {Props} props
+ * @returns {JSX.Element}
+ */
+export default function (props) {
+    let { toastRef } = props;
+    const [showing, setShowing] = useState(false);
+    const [message, setMessage] = useState('');
+    const defaultDuration = 3000;
+
+    useEffect(() => {
+        toastRef.current = {
+            show(param) {
+                _.isString(param.message) && setMessage(param.message);
+
+                setTimeout(() => setShowing(true));
+
+                setTimeout(
+                    () => setShowing(false),
+                    param?.duration ? param.duration : defaultDuration,
+                );
+            },
+            hide() {
+                setShowing(false);
+            },
+        };
+    }, [toastRef]);
 
     return (
-        <ToastProvider
-            placement="bottom | top"
-            duration={5000}
-            animationType="slide-in | zoom-in"
-            animationDuration={250}
-            successColor="green"
-            dangerColor="red"
-            warningColor="orange"
-            normalColor="gray"
-            // icon={<Icon />}
-            // successIcon={<SuccessIcon />}
-            // dangerIcon={<DangerIcon />}
-            // warningIcon={<WarningIcon />}
-            textStyle={{ fontSize: 20 }}
-            offset={50} // offset for both top and bottom toasts
-            offsetTop={30}
-            offsetBottom={40}
-            swipeEnabled={true}
-            renderToast={toastOptions => (
-                <View style={{ padding: 15, backgroundColor: 'grey' }}>
-                    <Text>{toast.message}</Text>
+        <Modal
+            animationType="fade"
+            visible={showing}
+            transparent
+            focusable={false}
+            onRequestClose={() => false}
+            statusBarTranslucent
+            presentationStyle={'overFullScreen'}>
+            <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => setShowing(false)}
+                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <View
+                    style={{
+                        bottom: '10%',
+                        position: 'absolute',
+                        borderRadius: AppData.consts.space_20,
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexShrink: 1,
+                        paddingVertical: AppData.consts.space_12,
+                        paddingHorizontal: AppData.consts.space_16,
+                        marginHorizontal: AppData.consts.space_12 * 4,
+                    }}>
+                    <Text
+                        style={{
+                            textAlign: 'center',
+                            fontFamily: AppStyle.Fonts.regular,
+                            fontSize: AppStyle.FontSizes.s_14,
+                            lineHeight: AppData.consts.space_22,
+                            color: AppColor.white,
+                        }}>
+                        {message}
+                    </Text>
                 </View>
-            )}>
-            {children}
-        </ToastProvider>
+            </TouchableOpacity>
+        </Modal>
     );
 }
-
-export default AppToast;

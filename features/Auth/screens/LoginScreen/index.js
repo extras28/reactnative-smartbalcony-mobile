@@ -1,36 +1,31 @@
+import { unwrapResult } from '@reduxjs/toolkit';
+import { thunkLogin } from 'features/Auth/authSlice';
+import { FastField, Formik } from 'formik';
+import { AppLoadingHelper } from 'general/components/AppLoading/index';
 import BaseScreenView from 'general/components/BaseScreenView/index';
+import DefaultTextInput from 'general/components/Forms/DefaultTextInput/index';
+import SubmitButton from 'general/components/SubmitButton/index';
 import AppColor from 'general/constants/AppColor';
 import AppData from 'general/constants/AppData';
 import AppResource from 'general/constants/AppResource';
-import React, { useEffect, useState } from 'react';
+import GlobalStyle from 'general/constants/GlobalStyle';
+import NavigationHelper from 'general/helpers/NavigationHelper';
+import Utils from 'general/utils/Utils';
+import _ from 'lodash';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+    Image,
     ImageBackground,
     KeyboardAvoidingView,
     StatusBar,
-    View,
-    Keyboard,
-    TouchableWithoutFeedback,
     Text,
-    Image,
     TouchableOpacity,
+    View
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { FastField, Formik } from 'formik';
-import * as Yup from 'yup';
-import GlobalStyle from 'general/constants/GlobalStyle';
-import DefaultTextInput from 'general/components/Forms/DefaultTextInput/index';
-import _ from 'lodash';
-import SubmitButton from 'general/components/SubmitButton/index';
-import { unwrapResult } from '@reduxjs/toolkit';
-import { thunkLogin } from 'features/Auth/authSlice';
-import Utils from 'general/utils/Utils';
 import { useDispatch, useSelector } from 'react-redux';
-import NavigationHelper from 'general/helpers/NavigationHelper';
-import AppStyle from 'general/constants/AppStyle';
-import AppLoading from 'general/components/AppLoading/index';
-import { useToast } from 'react-native-toast-notifications';
-import Loading from 'general/components/OtherSmartBalconyComponents/Loading/index';
+import * as Yup from 'yup';
 
 LoginScreen.propTypes = {};
 
@@ -53,10 +48,6 @@ function LoginScreen(props) {
     //     }
     //     refActiveSimLoading.current = false;
     // }
-
-    const toast = useToast();
-
-    console.log(isGettingCurrentAccount);
 
     return (
         <BaseScreenView
@@ -92,19 +83,13 @@ function LoginScreen(props) {
                             })}
                             enableReinitialize
                             onSubmit={async values => {
+                                AppLoadingHelper.current.show(t('Loading...'));
                                 const params = { ...values };
                                 params.password = Utils.sha256(params.password);
                                 try {
                                     const res = unwrapResult(await dispatch(thunkLogin(params)));
                                     const { result } = res.data;
                                     if (result === 'success') {
-                                        toast.show(t('Logged in successfully'), {
-                                            type: 'success',
-                                            placement: 'top',
-                                            duration: 4000,
-                                            offset: 30,
-                                            animationType: 'slide-in',
-                                        });
                                         NavigationHelper.goScreen(
                                             AppData.screens.DASHBOARD_HOME_SCREEN,
                                         );
@@ -112,6 +97,7 @@ function LoginScreen(props) {
                                 } catch (error) {
                                     console.log(`${sTag} login error: ${error.message}`);
                                 }
+                                AppLoadingHelper.current.hide();
                             }}>
                             {formikProps => (
                                 <View
@@ -244,7 +230,6 @@ function LoginScreen(props) {
                     </View>
                 </ImageBackground>
             </KeyboardAvoidingView>
-            {/* {isGettingCurrentAccount && <Loading />} */}
         </BaseScreenView>
     );
 }

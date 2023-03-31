@@ -262,9 +262,7 @@ function SignUpScreen(props) {
                                                 </Text>
                                                 <TouchableOpacity
                                                     onPress={() => {
-                                                        NavigationHelper.goScreen(
-                                                            AppData.screens.SIGN_UP_SCREEN,
-                                                        );
+                                                        NavigationHelper.goBack();
                                                     }}>
                                                     <Text
                                                         style={{

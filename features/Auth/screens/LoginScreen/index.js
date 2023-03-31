@@ -21,7 +21,7 @@ import {
     StatusBar,
     Text,
     TouchableOpacity,
-    View
+    View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
@@ -213,7 +213,12 @@ function LoginScreen(props) {
                                                 {t('Don’t have an account?')}
                                                 {'  '}
                                             </Text>
-                                            <TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    NavigationHelper.goScreen(
+                                                        AppData.screens.SIGN_UP_SCREEN,
+                                                    );
+                                                }}>
                                                 <Text
                                                     style={{
                                                         fontWeight: '600',

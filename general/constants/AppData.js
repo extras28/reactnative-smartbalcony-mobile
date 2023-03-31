@@ -3,6 +3,7 @@ const AppData = {
     screens: {
         DASHBOARD_HOME_SCREEN: 'DASHBOARD_HOME_SCREEN',
         LOGIN_SCREEN: 'LOGIN_SCREEN',
+        SIGN_UP_SCREEN: 'SIGN_UP_SCREEN',
     },
     consts: {
         os: Platform.OS,

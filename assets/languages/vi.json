@@ -9,5 +9,12 @@
     "Forgot Password?": "Quên mật khẩu?",
     "Don’t have an account?": "Bạn chưa có tài khoản?",
     "Sign Up": "Đăng ký",
-    "Logged in successfully": "Đăng nhập thành công"
+    "Logged in successfully": "Đăng nhập thành công",
+    "Create your new account": "Tạo tài khoản của riêng bạn",
+    "Please confirm the password!": "Vui lòng xác nhận mật khẩu",
+    "Password does not match": "Mật khẩu không trùng khớp",
+    "Confirm password": "Nhập lại mật khẩu",
+    "Confirm your password": "Xác nhận mật khẩu của bạn",
+    "Sign up successful": "Đăng ký thành công",
+    "Already have an account?": "Bạn đã có tài khoản của Smart Balcony?"
 }

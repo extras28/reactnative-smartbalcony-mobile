@@ -1,4 +1,5 @@
 // Util functions
+import { ScaleToastRef } from 'general/components/AppToast/index';
 import { sha256 } from 'js-sha256';
 import _ from 'lodash';
 import moment from 'moment';
@@ -185,6 +186,14 @@ const Utils = {
             return date.isAfter(currentDate);
         });
         return filteredDates.map(date => date.format('YYYY-MM-DD HH:mm:ss'));
+    },
+
+    /**
+     *
+     * @param {ScaleToastParams} params
+     */
+    toast(params) {
+        ScaleToastRef.current?.show(params);
     },
 };
 

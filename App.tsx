@@ -7,6 +7,7 @@
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import SignUpScreen from 'features/Auth/screens/SignUpScreen/index';
 import AppLoading from 'general/components/AppLoading/index';
 import ScaleToast, { ScaleToastRef } from 'general/components/AppToast/index';
 import { navigationRef } from 'general/helpers/NavigationHelper';
@@ -62,6 +63,11 @@ function AppNavigator() {
                 <Stack.Screen
                     name={AppData.screens.LOGIN_SCREEN}
                     component={LoginScreen}
+                    options={{ animationEnabled: true, header: () => null }}
+                />
+                <Stack.Screen
+                    name={AppData.screens.SIGN_UP_SCREEN}
+                    component={SignUpScreen}
                     options={{ animationEnabled: true, header: () => null }}
                 />
                 <Stack.Screen

@@ -88,17 +88,22 @@ function LoginScreen(props) {
                                 params.password = Utils.sha256(params.password);
                                 try {
                                     const res = unwrapResult(await dispatch(thunkLogin(params)));
-                                    const { result } = res.data;
+                                    const { result, account } = res.data;
                                     if (result === 'success') {
                                         NavigationHelper.goScreen(
                                             AppData.screens.DASHBOARD_HOME_SCREEN,
                                         );
+                                        Utils.toast({
+                                            message: t('Welcome, ', {
+                                                fullname: account?.fullname,
+                                            }),
+                                        });
                                     }
                                 } catch (error) {
                                     console.log(`${sTag} login error: ${error.message}`);
                                     Utils.toast({
-                                        message: t("Log in failed")
-                                    })
+                                        message: t('Log in failed'),
+                                    });
                                 }
                                 AppLoadingHelper.current.hide();
                             }}>

@@ -19,5 +19,6 @@
     "Already have an account?": "Bạn đã có tài khoản của Smart Balcony?",
     "Log in failed": "Đăng nhập không thành công",
     "Fullname": "Tên hiển thị",
-    "Enter your fullname": "Nhập tên bạn muốn hiển thị"
+    "Enter your fullname": "Nhập tên bạn muốn hiển thị",
+    "Welcome, ": "Xin chào {{fullname}}"
 }

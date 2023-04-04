@@ -85,7 +85,7 @@ function LoginScreen(props) {
                             onSubmit={async values => {
                                 AppLoadingHelper.current.show(t('Loading...'));
                                 const params = { ...values };
-                                params.password = Utils.sha256(params.password);
+                                // params.password = Utils.sha256(params.password);
                                 try {
                                     const res = unwrapResult(await dispatch(thunkLogin(params)));
                                     const { result, account } = res.data;
@@ -101,9 +101,9 @@ function LoginScreen(props) {
                                     }
                                 } catch (error) {
                                     console.log(`${sTag} login error: ${error.message}`);
-                                    Utils.toast({
-                                        message: t('Log in failed'),
-                                    });
+                                    // Utils.toast({
+                                    //     message: t('Log in failed'),
+                                    // });
                                 }
                                 AppLoadingHelper.current.hide();
                             }}>

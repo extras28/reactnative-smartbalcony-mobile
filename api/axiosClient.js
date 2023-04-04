@@ -11,11 +11,11 @@ const sTag = '[AxiosClient]';
  */
 const baseURL = Utils.getBaseURL();
 const axiosClient = axios.create({
-  baseURL: AppConfig.apiBaseUrl,
-  headers: {
-    'content-type': 'application/json',
-  },
-  paramsSerializer: (params) => queryString.stringify(params),
+    baseURL: AppConfig.apiBaseUrl,
+    headers: {
+        'content-type': 'application/json',
+    },
+    paramsSerializer: params => queryString.stringify(params),
 });
 
 axiosClient.interceptors.request.use(
@@ -58,7 +58,7 @@ axiosClient.interceptors.response.use(
 
         const response = error.response;
         let url = error.config?.url;
-        // console.log({ response });
+        console.log(response.data.reason);
 
         if (response) {
             // if (response.status === 401) {
@@ -85,6 +85,10 @@ axiosClient.interceptors.response.use(
             //     // store.dispatch(updateAuthStatus('loggedOut'));
             //     store.dispatch(thunkLogout());
             // }
+            Utils.toast({
+                message: response.data.reason,
+                duration: 2000,
+            });
         }
 
         throw {

@@ -5,6 +5,7 @@ import { sha256 } from 'js-sha256';
 import _ from 'lodash';
 import moment from 'moment';
 import 'moment/locale/vi';
+import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions';
 moment.locale('vi');
 
 const Utils = {
@@ -201,6 +202,19 @@ const Utils = {
             routes: [{ name: AppData.screens.LOGIN_SCREEN }],
             index: 0,
         });
+    },
+
+    requestAppPermission: async permission => {
+        const result = await request(permission);
+        return result;
+    },
+    checkAppPermission: async permission => {
+        const res = await check(permission);
+        if (res === RESULTS.GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
     },
 };
 

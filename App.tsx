@@ -60,6 +60,7 @@ function RootComponent() {
 function AppNavigator() {
     //TODO: initialRouteName
     let initialRouteName = AppData.screens.LAUNCH_SCREEN;
+    // let initialRouteName = AppData.screens.DASHBOARD_HOME_SCREEN;
     return (
         <NavigationContainer ref={navigationRef}>
             <Stack.Navigator initialRouteName={initialRouteName}>

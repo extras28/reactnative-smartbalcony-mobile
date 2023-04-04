@@ -46,219 +46,198 @@ function SignUpScreen(props) {
                     resizeMode="cover"
                     style={{
                         flex: 1,
+                        paddingHorizontal: 40,
+                        paddingTop: 100,
                     }}>
-                    <ScrollView
+                    {/* <ScrollView
                         style={{
+                            flex: 1,
                             paddingHorizontal: 40,
                             paddingTop: 100,
+                        }}> */}
+                    <Text
+                        style={{
+                            textAlign: 'center',
+                            fontSize: 40,
+                            fontWeight: '600',
+                            color: '#060606',
                         }}>
-                        <Text
-                            style={{
-                                textAlign: 'center',
-                                fontSize: 40,
-                                fontWeight: '600',
-                                color: '#060606',
-                            }}>
-                            {t('Sign Up')}
-                        </Text>
-                        <Text
-                            style={{
-                                textAlign: 'center',
-                                fontSize: 15,
-                                color: '#A5AFA8',
-                                marginBottom: 20,
-                            }}>
-                            {t('Create your new account')}
-                        </Text>
+                        {t('Sign Up')}
+                    </Text>
+                    <Text
+                        style={{
+                            textAlign: 'center',
+                            fontSize: 15,
+                            color: '#A5AFA8',
+                            marginBottom: 20,
+                        }}>
+                        {t('Create your new account')}
+                    </Text>
 
-                        <View>
-                            <Formik
-                                initialValues={{
-                                    email: '',
-                                    password: '',
-                                    confirmPassword: '',
-                                    fullname: '',
-                                }}
-                                validationSchema={Yup.object({
-                                    fullname: Yup.string().required(t('Fullname is required')),
-                                    email: Yup.string().required(t('Email is required')),
-                                    password: Yup.string().required(t('Password is required')),
-                                    confirmPassword: Yup.string()
-                                        .required(t('Please confirm the password!'))
-                                        .oneOf(
-                                            [Yup.ref('password'), null],
-                                            t('Password does not match'),
-                                        ),
-                                })}
-                                enableReinitialize
-                                onSubmit={async values => {
-                                    AppLoadingHelper.current.show(t('Loading...'));
-                                    const params = { ...values };
-                                    params.password = Utils.sha256(params.password);
-                                    delete params.confirmPassword;
-                                    try {
-                                        const res = await authApi.signUp(params);
-                                        const { result } = res.data;
-                                        if (result === 'success') {
-                                            NavigationHelper.goScreen(AppData.screens.LOGIN_SCREEN);
-                                        }
-                                    } catch (error) {
-                                        console.log(`${sTag} sign up error: ${error.message}`);
+                    <View>
+                        <Formik
+                            initialValues={{
+                                email: '',
+                                password: '',
+                                confirmPassword: '',
+                                fullname: 'ADMIN',
+                            }}
+                            validationSchema={Yup.object({
+                                fullname: Yup.string().required(t('Fullname is required')),
+                                email: Yup.string().required(t('Email is required')),
+                                password: Yup.string().required(t('Password is required')),
+                                confirmPassword: Yup.string()
+                                    .required(t('Please confirm the password!'))
+                                    .oneOf(
+                                        [Yup.ref('password'), null],
+                                        t('Password does not match'),
+                                    ),
+                            })}
+                            enableReinitialize
+                            onSubmit={async values => {
+                                AppLoadingHelper.current.show(t('Loading...'));
+                                const params = { ...values };
+                                // params.password = Utils.sha256(params.password);
+                                delete params.confirmPassword;
+                                try {
+                                    const res = await authApi.signUp(params);
+                                    const { result } = res.data;
+                                    if (result === 'success') {
+                                        NavigationHelper.goScreen(AppData.screens.LOGIN_SCREEN);
                                     }
-                                    AppLoadingHelper.current.hide();
-                                    Utils.toast({
-                                        message: t('Sign up successful'),
-                                        duration: 2000,
-                                    });
-                                }}>
-                                {formikProps => (
-                                    <View
-                                        style={{
-                                            backgroundColor: 'white',
-                                            ...GlobalStyle.ViewSize.fullWidth,
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                        }}>
-                                        <View style={{ marginVertical: 20 }}>
-                                            <FastField name="fullname">
-                                                {({ field, form, meta }) => (
-                                                    <View
-                                                        style={{
-                                                            ...GlobalStyle.Margin.bottom(),
-                                                        }}>
-                                                        <DefaultTextInput
-                                                            label={t('Fullname')}
-                                                            placeholder={t('Enter your fullname')}
-                                                            value={field.value}
-                                                            onChange={value => {
-                                                                form.setFieldValue(
-                                                                    field.name,
-                                                                    value,
-                                                                );
-                                                            }}
-                                                            onFocus={() => {
-                                                                form.setFieldTouched(
-                                                                    field.name,
-                                                                    true,
-                                                                );
-                                                            }}
-                                                            enableCheckValid
-                                                            required
-                                                            isValid={_.isEmpty(meta.error)}
-                                                            isTouched={meta.touched}
-                                                            feedbackText={meta.error}
-                                                        />
-                                                    </View>
-                                                )}
-                                            </FastField>
-                                            <FastField name="email">
-                                                {({ field, form, meta }) => (
-                                                    <View
-                                                        style={{
-                                                            ...GlobalStyle.Margin.bottom(),
-                                                        }}>
-                                                        <DefaultTextInput
-                                                            label="Email"
-                                                            placeholder={t('Enter your email')}
-                                                            value={field.value}
-                                                            onChange={value => {
-                                                                form.setFieldValue(
-                                                                    field.name,
-                                                                    value,
-                                                                );
-                                                            }}
-                                                            onFocus={() => {
-                                                                form.setFieldTouched(
-                                                                    field.name,
-                                                                    true,
-                                                                );
-                                                            }}
-                                                            enableCheckValid
-                                                            required
-                                                            isValid={_.isEmpty(meta.error)}
-                                                            isTouched={meta.touched}
-                                                            feedbackText={meta.error}
-                                                        />
-                                                    </View>
-                                                )}
-                                            </FastField>
-                                            <FastField name="password">
-                                                {({ field, form, meta }) => (
-                                                    <View
-                                                        style={{
-                                                            ...GlobalStyle.Margin.bottom(),
-                                                        }}>
-                                                        <DefaultTextInput
-                                                            label={t('Password')}
-                                                            placeholder={t('Enter your password')}
-                                                            value={field.value}
-                                                            onChange={value => {
-                                                                form.setFieldValue(
-                                                                    field.name,
-                                                                    value,
-                                                                );
-                                                            }}
-                                                            onFocus={() => {
-                                                                form.setFieldTouched(
-                                                                    field.name,
-                                                                    true,
-                                                                );
-                                                            }}
-                                                            enableCheckValid
-                                                            required
-                                                            isValid={_.isEmpty(meta.error)}
-                                                            isTouched={meta.touched}
-                                                            feedbackText={meta.error}
-                                                        />
-                                                    </View>
-                                                )}
-                                            </FastField>
-                                            <FastField name="confirmPassword">
-                                                {({ field, form, meta }) => (
-                                                    <View
-                                                        style={{
-                                                            ...GlobalStyle.Margin.bottom(),
-                                                        }}>
-                                                        <DefaultTextInput
-                                                            label={t('Confirm password')}
-                                                            placeholder={t('Confirm your password')}
-                                                            value={field.value}
-                                                            onChange={value => {
-                                                                form.setFieldValue(
-                                                                    field.name,
-                                                                    value,
-                                                                );
-                                                            }}
-                                                            onFocus={() => {
-                                                                form.setFieldTouched(
-                                                                    field.name,
-                                                                    true,
-                                                                );
-                                                            }}
-                                                            enableCheckValid
-                                                            required
-                                                            isValid={_.isEmpty(meta.error)}
-                                                            isTouched={meta.touched}
-                                                            feedbackText={meta.error}
-                                                        />
-                                                    </View>
-                                                )}
-                                            </FastField>
+                                } catch (error) {
+                                    console.log(`${sTag} sign up error: ${error.message}`);
+                                }
+                                AppLoadingHelper.current.hide();
+                                Utils.toast({
+                                    message: t('Sign up successful'),
+                                    duration: 2000,
+                                });
+                            }}>
+                            {formikProps => (
+                                <View
+                                    style={{
+                                        backgroundColor: 'white',
+                                        ...GlobalStyle.ViewSize.fullWidth,
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                    }}>
+                                    <View style={{ marginVertical: 20 }}>
+                                        {/* <FastField name="fullname">
+                                            {({ field, form, meta }) => (
+                                                <View
+                                                    style={{
+                                                        ...GlobalStyle.Margin.bottom(),
+                                                    }}>
+                                                    <DefaultTextInput
+                                                        label={t('Fullname')}
+                                                        placeholder={t('Enter your fullname')}
+                                                        value={field.value}
+                                                        onChange={value => {
+                                                            form.setFieldValue(field.name, value);
+                                                        }}
+                                                        onFocus={() => {
+                                                            form.setFieldTouched(field.name, true);
+                                                        }}
+                                                        enableCheckValid
+                                                        required
+                                                        isValid={_.isEmpty(meta.error)}
+                                                        isTouched={meta.touched}
+                                                        feedbackText={meta.error}
+                                                    />
+                                                </View>
+                                            )}
+                                        </FastField> */}
+                                        <FastField name="email">
+                                            {({ field, form, meta }) => (
+                                                <View
+                                                    style={{
+                                                        ...GlobalStyle.Margin.bottom(),
+                                                    }}>
+                                                    <DefaultTextInput
+                                                        label="Email"
+                                                        placeholder={t('Enter your email')}
+                                                        value={field.value}
+                                                        onChange={value => {
+                                                            form.setFieldValue(field.name, value);
+                                                        }}
+                                                        onFocus={() => {
+                                                            form.setFieldTouched(field.name, true);
+                                                        }}
+                                                        enableCheckValid
+                                                        required
+                                                        isValid={_.isEmpty(meta.error)}
+                                                        isTouched={meta.touched}
+                                                        feedbackText={meta.error}
+                                                    />
+                                                </View>
+                                            )}
+                                        </FastField>
+                                        <FastField name="password">
+                                            {({ field, form, meta }) => (
+                                                <View
+                                                    style={{
+                                                        ...GlobalStyle.Margin.bottom(),
+                                                    }}>
+                                                    <DefaultTextInput
+                                                        label={t('Password')}
+                                                        placeholder={t('Enter your password')}
+                                                        value={field.value}
+                                                        onChange={value => {
+                                                            form.setFieldValue(field.name, value);
+                                                        }}
+                                                        onFocus={() => {
+                                                            form.setFieldTouched(field.name, true);
+                                                        }}
+                                                        enableCheckValid
+                                                        required
+                                                        isValid={_.isEmpty(meta.error)}
+                                                        isTouched={meta.touched}
+                                                        feedbackText={meta.error}
+                                                    />
+                                                </View>
+                                            )}
+                                        </FastField>
+                                        <FastField name="confirmPassword">
+                                            {({ field, form, meta }) => (
+                                                <View
+                                                    style={{
+                                                        ...GlobalStyle.Margin.bottom(),
+                                                    }}>
+                                                    <DefaultTextInput
+                                                        label={t('Confirm password')}
+                                                        placeholder={t('Confirm your password')}
+                                                        value={field.value}
+                                                        onChange={value => {
+                                                            form.setFieldValue(field.name, value);
+                                                        }}
+                                                        onFocus={() => {
+                                                            form.setFieldTouched(field.name, true);
+                                                        }}
+                                                        enableCheckValid
+                                                        required
+                                                        isValid={_.isEmpty(meta.error)}
+                                                        isTouched={meta.touched}
+                                                        feedbackText={meta.error}
+                                                    />
+                                                </View>
+                                            )}
+                                        </FastField>
 
-                                            <View
-                                                style={{
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                    marginTop: 20,
-                                                }}>
-                                                <Image
-                                                    source={AppResource.images.img_sign_up}
-                                                    style={{}}
-                                                />
-                                            </View>
+                                        <View
+                                            style={{
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                marginTop: 20,
+                                            }}>
+                                            <Image
+                                                source={AppResource.images.img_sign_up}
+                                                style={{}}
+                                            />
+                                        </View>
 
-                                            {/* <TouchableOpacity>
+                                        {/* <TouchableOpacity>
                                                 <Text
                                                     style={{
                                                         color: '#BEC2C2',
@@ -268,52 +247,52 @@ function SignUpScreen(props) {
                                                 </Text>
                                             </TouchableOpacity> */}
 
-                                            <SubmitButton
-                                                type="primary"
-                                                text={t('Sign Up')}
-                                                onPress={() => {
-                                                    formikProps.handleSubmit();
-                                                }}
-                                                activeShadow
-                                                style={{
-                                                    marginTop: 30,
-                                                    borderWidth: 0,
-                                                    borderColor: AppColor.primary,
-                                                }}
-                                                // isPending={isPending}
-                                            />
+                                        <SubmitButton
+                                            type="primary"
+                                            text={t('Sign Up')}
+                                            onPress={() => {
+                                                formikProps.handleSubmit();
+                                            }}
+                                            activeShadow
+                                            style={{
+                                                marginTop: 30,
+                                                borderWidth: 0,
+                                                borderColor: AppColor.primary,
+                                            }}
+                                            // isPending={isPending}
+                                        />
 
-                                            <View
-                                                style={{
-                                                    display: 'flex',
-                                                    flexDirection: 'column',
-                                                    alignItems: 'center',
-                                                    marginTop: 10,
-                                                    color: '#666666',
+                                        <View
+                                            style={{
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                alignItems: 'center',
+                                                marginTop: 10,
+                                                color: '#666666',
+                                            }}>
+                                            <Text>
+                                                {t('Already have an account?')}
+                                                {'  '}
+                                            </Text>
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    NavigationHelper.goBack();
                                                 }}>
-                                                <Text>
-                                                    {t('Already have an account?')}
-                                                    {'  '}
-                                                </Text>
-                                                <TouchableOpacity
-                                                    onPress={() => {
-                                                        NavigationHelper.goBack();
+                                                <Text
+                                                    style={{
+                                                        fontWeight: '600',
+                                                        textDecorationLine: 'underline',
                                                     }}>
-                                                    <Text
-                                                        style={{
-                                                            fontWeight: '600',
-                                                            textDecorationLine: 'underline',
-                                                        }}>
-                                                        {t('Sign In')}
-                                                    </Text>
-                                                </TouchableOpacity>
-                                            </View>
+                                                    {t('Sign In')}
+                                                </Text>
+                                            </TouchableOpacity>
                                         </View>
                                     </View>
-                                )}
-                            </Formik>
-                        </View>
-                    </ScrollView>
+                                </View>
+                            )}
+                        </Formik>
+                    </View>
+                    {/* </ScrollView> */}
                 </ImageBackground>
             </KeyboardAvoidingView>
         </BaseScreenView>

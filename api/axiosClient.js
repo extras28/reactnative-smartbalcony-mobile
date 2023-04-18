@@ -1,8 +1,10 @@
 import axios from 'axios';
 import AppConfig from 'general/constants/AppConfig';
+import variable from 'general/constants/variable';
 import Utils from 'general/utils/Utils';
 import { t } from 'i18next';
 import queryString from 'query-string';
+import _ from 'lodash';
 
 const sTag = '[AxiosClient]';
 // Setup configs for http request: `https://github.com/axios/axios#request-config`
@@ -28,9 +30,9 @@ axiosClient.interceptors.request.use(
             }`,
         );
         console.log(`${sTag} - headers: ${JSON.stringify(config.headers.common)}`);
-        // if (variable.accessToken) {
-        //     _.set(config.headers.common, 'Authorization', 'Bearer ' + variable.accessToken);
-        // }
+        if (variable.accessToken) {
+            _.set(config.headers.common, 'Authorization', 'Bearer ' + variable.accessToken);
+        }
 
         // if (variable.sessionToken) {
         //     _.set(config.headers.common, 'session-token', variable.sessionToken);

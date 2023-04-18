@@ -1,34 +1,32 @@
+import balconyApi from 'api/balconyApi';
 import weatherApi from 'api/weatherApi';
 
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
-export const thunkGetCurrentWeather = createAsyncThunk(
-    'dashboard/weather',
-    async (params, thunkApi) => {
-        const res = await weatherApi.getCurrentWeather(params);
-        return res;
-    },
-);
+export const thunkGetListBalcony = createAsyncThunk('dashbard/list', async (params, thunkApi) => {
+    const res = await balconyApi.getListBalcony(params);
+    return res;
+});
 
 const dashboardSlice = createSlice({
     name: 'dashboard',
     initialState: {
-        isGettingCurrentWeather: false,
-        currentWeather: {},
+        isGettingListbalcony: false,
+        balconies: [],
     },
     reducers: {},
     extraReducers: {
-        [thunkGetCurrentWeather.pending]: (state, action) => {
-            state.isGettingCurrentWeather = true;
+        [thunkGetListBalcony.pending]: (state, action) => {
+            state.isGettingListbalcony = true;
         },
-        [thunkGetCurrentWeather.rejected]: (state, action) => {
-            state.isGettingCurrentWeather = false;
+        [thunkGetListBalcony.rejected]: (state, action) => {
+            state.isGettingListbalcony = false;
         },
-        [thunkGetCurrentWeather.fulfilled]: (state, action) => {
-            state.isGettingCurrentWeather = false;
-            const { data } = action.payload;
-            if (data) {
-                state.currentWeather = data;
+        [thunkGetListBalcony.fulfilled]: (state, action) => {
+            state.isGettingListbalcony = false;
+            const { balconies, result } = action.payload.data;
+            if (result === 'success') {
+                state.balconies = balconies;
             }
         },
     },

@@ -1,3 +1,6 @@
+import DeviceConstants from "./DeviceConstants";
+import GlobalStyle from "./GlobalStyle";
+
 const AppStyle = {
     Fonts: {
         light: 'Inter-Light',
@@ -56,6 +59,20 @@ const AppStyle = {
         s_29: 29,
         s_30: 30,
     },
+    viewContainer: {
+        flex: 1,
+        ...GlobalStyle.ViewSize.fullWidth,
+      },
+    
+      // Header
+      viewHeader: {
+        width: DeviceConstants.screenWidth,
+        aspectRatio: 390 / 237,
+        ...GlobalStyle.ViewSize.fullWidth,
+        backgroundColor: 'white',
+        position: 'absolute',
+        top: 0,
+      },
 };
 
 export default AppStyle;

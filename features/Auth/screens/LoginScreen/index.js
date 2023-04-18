@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { thunkLogin } from 'features/Auth/authSlice';
 import { FastField, Formik } from 'formik';
@@ -37,6 +38,7 @@ function LoginScreen(props) {
     const insets = useSafeAreaInsets();
     const dispatch = useDispatch();
     const { isGettingCurrentAccount } = useSelector(state => state?.auth);
+    const navigation = useNavigation();
 
     // MARK --- Functions: ---
     // async function handleLogin() {

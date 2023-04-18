@@ -1,4 +1,5 @@
 import authApi from 'api/authApi';
+import variable from 'general/constants/variable';
 
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
@@ -23,9 +24,10 @@ const authSlice = createSlice({
         },
         [thunkLogin.fulfilled]: (state, action) => {
             state.isGettingCurrentAccount = false;
-            const { result, account } = action.payload;
+            const { result, account } = action.payload.data;
             if (result === 'success') {
-                currentAccount = account;
+                state.currentAccount = account;
+                variable.accessToken = account.accessToken;
             }
         },
     },

@@ -8,9 +8,15 @@ export const thunkLogin = createAsyncThunk('auth/login', async (params, thunkApi
     return res;
 });
 
+export const thunkLogOut = createAsyncThunk('auth/log-out', async (params, thunkApi) => {
+    const res = await authApi.logOut(params);
+    return res;
+});
+
 const authSlice = createSlice({
     name: 'auth',
     initialState: {
+        isLoggedIn: false,
         isGettingCurrentAccount: false,
         currentAccount: {},
     },
@@ -28,6 +34,15 @@ const authSlice = createSlice({
             if (result === 'success') {
                 state.currentAccount = account;
                 variable.accessToken = account.accessToken;
+                state.isLoggedIn = true;
+            }
+        },
+
+        [thunkLogOut.fulfilled]: (state, action) => {
+            const { result } = action.payload.data;
+            if (result === 'success') {
+                state.currentAccount = {};
+                variable.accessToken = '';
             }
         },
     },

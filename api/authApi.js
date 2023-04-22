@@ -1,13 +1,17 @@
 import axiosClient from './axiosClient';
 
 const authApi = {
-    login: parmas => {
+    login: params => {
         const url = '/account/sign-in';
-        return axiosClient.post(url, parmas);
+        return axiosClient.post(url, params);
     },
-    signUp: parmas => {
+    signUp: params => {
         const url = '/account/sign-up';
-        return axiosClient.post(url, parmas);
+        return axiosClient.post(url, params);
+    },
+    logOut: params => {
+        const url = '/account/sign-out';
+        return axiosClient.post(url, params);
     },
 };
 

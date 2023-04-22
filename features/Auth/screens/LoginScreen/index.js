@@ -50,6 +50,12 @@ function LoginScreen(props) {
     //     }
     //     refActiveSimLoading.current = false;
     // }
+    function resetNavigation() {
+        navigation.reset({
+            routes: [{ name: AppData.screens.DASHBOARD_HOME_SCREEN }],
+            index: 0,
+        });
+    }
 
     return (
         <BaseScreenView
@@ -95,6 +101,7 @@ function LoginScreen(props) {
                                         NavigationHelper.goScreen(
                                             AppData.screens.DASHBOARD_HOME_SCREEN,
                                         );
+                                        // resetNavigation();
                                         Utils.toast({
                                             message: t('Welcome, ', {
                                                 fullname: account?.fullname,

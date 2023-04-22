@@ -5,6 +5,10 @@ import Utils from 'general/utils/Utils';
 import { t } from 'i18next';
 import queryString from 'query-string';
 import _ from 'lodash';
+import NavigationHelper from 'general/helpers/NavigationHelper';
+import AppData from 'general/constants/AppData';
+import { store } from 'app/store';
+import { thunkLogOut } from 'features/Auth/authSlice';
 
 const sTag = '[AxiosClient]';
 // Setup configs for http request: `https://github.com/axios/axios#request-config`
@@ -63,30 +67,30 @@ axiosClient.interceptors.response.use(
         console.log(response.data.reason);
 
         if (response) {
-            // if (response.status === 401) {
-            //     /* token expires */
-            //     variable.accessToken = undefined;
-            //     variable.sessionToken = undefined;
+            if (response.status === 401) {
+                /* token expires */
+                variable.accessToken = undefined;
+                variable.sessionToken = undefined;
 
-            //     if (url == '/account/logout') {
-            //         return;
-            //     }
+                if (url == '/account/sign-out') {
+                    return;
+                }
 
-            //     NavigationHelper.replaceScreen(Screens.AUTH_LOGIN);
-            //     // store.dispatch(updateAuthStatus('loggedOut'));
-            //     store.dispatch(thunkLogout());
-            // } else if (response.status == 403) {
-            //     variable.accessToken = undefined;
-            //     variable.sessionToken = undefined;
+                NavigationHelper.replaceScreen(AppData.screens.LOGIN_SCREEN);
+                // store.dispatch(updateAuthStatus('loggedOut'));
+                store.dispatch(thunkLogOut());
+            } else if (response.status == 403) {
+                variable.accessToken = undefined;
+                variable.sessionToken = undefined;
 
-            //     if (url == '/account/logout') {
-            //         return;
-            //     }
-            //     /* forbidden */
-            //     NavigationHelper.replaceScreen(Screens.AUTH_LOGIN);
-            //     // store.dispatch(updateAuthStatus('loggedOut'));
-            //     store.dispatch(thunkLogout());
-            // }
+                if (url == '/account/sign-out') {
+                    return;
+                }
+                /* forbidden */
+                NavigationHelper.replaceScreen(AppData.screens.LOGIN_SCREEN);
+                // store.dispatch(updateAuthStatus('loggedOut'));
+                store.dispatch(thunkLogOut());
+            }
             Utils.toast({
                 message: response.data.reason,
                 duration: 2000,

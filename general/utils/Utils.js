@@ -1,4 +1,5 @@
 // Util functions
+import axios from 'axios';
 import { ScaleToastRef } from 'general/components/AppToast/index';
 import AppData from 'general/constants/AppData';
 import { sha256 } from 'js-sha256';
@@ -214,6 +215,38 @@ const Utils = {
             return true;
         } else {
             return false;
+        }
+    },
+
+    uploadCloudinary: async file => {
+        try {
+            // const formData = new FormData();
+            console.log(file);
+            // formData.append('file', {
+            //     uri: file.uri,
+            //     type: file.type,
+            //     name: file.fileName,
+            // });
+            let base64Img = `data:image/png;base64,${file.base64}`;
+            let data = {
+                file: base64Img,
+                upload_preset: 'SmartBalcony',
+            };
+            // formData.append('upload_preset', 'WebTechnology');
+            const res = await axios.post(
+                'https://api.cloudinary.com/v1_1/dc7pxknio/upload',
+                JSON.stringify(data),
+                { headers: { 'content-type': 'application/json' } },
+            );
+            if (res) {
+                return res.data.secure_url;
+            }
+        } catch (error) {
+            console.error({
+                result: 'failed',
+                message: 'Upload file to cloudinary failed',
+                reason: error,
+            });
         }
     },
 };

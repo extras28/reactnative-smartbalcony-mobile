@@ -5,6 +5,8 @@ const AppResource = {
         img_sign_up_bg: require('../../assets/images/img_sign_up_bg.png'),
         img_sign_up: require('../../assets/images/img_sign_up.png'),
         img_bg: require('assets/images/img_bg.jpg'),
+        img_error_image: require('assets/images/img_error_image.png'),
+        img_default: require('assets/images/img_default.png'),
     },
     icons: {
         ic_input_clear: require('../../assets/icons/ic_input_clear/ic_input_clear.png'),

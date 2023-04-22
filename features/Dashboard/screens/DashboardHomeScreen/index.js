@@ -28,6 +28,7 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import { thunkGetListBalcony } from 'features/Dashboard/dashboardSlice';
 import balconyApi from 'api/balconyApi';
 import variable from 'general/constants/variable';
+import ModalEditBalcony from 'features/Dashboard/components/ModalEditBalcony';
 
 DashboardHomeScreen.propTypes = {};
 
@@ -36,6 +37,8 @@ const sTag = '[DashboardHomeScreen]';
 function DashboardHomeScreen(props) {
     // MARK --- Params: ---
     const [loading, setLoading] = useState(false);
+    const [showingModalEditBalcony, setShowingModalEditBalcony] = useState(false);
+    const [selectedBalconyItem, setSelectedBalconyItem] = useState(null);
     const dispatch = useDispatch();
     const { balconies, isGettingListbalcony } = useSelector(state => state?.dashboard);
 
@@ -99,7 +102,7 @@ function DashboardHomeScreen(props) {
                         <Text style={{ fontSize: 20, color: AppColor.slategray }}>Ban công</Text>
                         <TouchableOpacity
                             onPress={() => {
-                                console.log('add');
+                                setShowingModalEditBalcony(true);
                             }}>
                             <AntDesignIcon
                                 name="pluscircleo"
@@ -126,16 +129,26 @@ function DashboardHomeScreen(props) {
                         {balconies?.map((item, index) => {
                             return (
                                 <CardBalconyItem
+                                    key={index}
                                     image={item?.image}
                                     name={item?.name}
                                     humidity={parseInt(item?.humidity ?? 0)}
                                     temperature={parseInt(item?.temperature ?? 0)}
+                                    onPressEdit={() => {
+                                        setShowingModalEditBalcony(true);
+                                        setSelectedBalconyItem(item);
+                                    }}
                                 />
                             );
                         })}
                     </ScrollView>
                 </View>
             </ImageBackground>
+            <ModalEditBalcony
+                show={showingModalEditBalcony}
+                onClose={() => setShowingModalEditBalcony(false)}
+                balconyItem={selectedBalconyItem}
+            />
         </BaseScreenView>
     );
 }

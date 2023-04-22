@@ -1,17 +1,19 @@
-import React from 'react';
+import AppColor from 'general/constants/AppColor';
+import AppResource from 'general/constants/AppResource';
 import PropTypes from 'prop-types';
-import { Text, View, TouchableOpacity } from 'react-native';
-import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
+import React from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { Card, Title } from 'react-native-paper';
+import Entypo from 'react-native-vector-icons/dist/Entypo';
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
-import AppColor from 'general/constants/AppColor';
 
 CardBalconyItem.propTypes = {
     image: PropTypes.string,
     name: PropTypes.string,
     humidity: PropTypes.number,
     temperature: PropTypes.number,
+    onPressEdit: PropTypes.func,
 };
 
 CardBalconyItem.defaultProps = {
@@ -19,11 +21,19 @@ CardBalconyItem.defaultProps = {
     name: '',
     humidity: null,
     temperature: null,
+    onPressEdit: null,
 };
 
 function CardBalconyItem(props) {
     // MARK --- Params ---
-    const { image, name, humidity, temperature } = props;
+    const { image, name, humidity, temperature, onPressEdit } = props;
+
+    // MARK --- Functions: ---
+    function handlePressEdit() {
+        if (onPressEdit) {
+            onPressEdit();
+        }
+    }
     return (
         <View
             style={{
@@ -50,14 +60,16 @@ function CardBalconyItem(props) {
                         elevation: 5,
                     }}
                     onPress={() => {
-                        console.log('edit');
+                        handlePressEdit();
                     }}>
-                    <FontAwesome5 name="pen" size={15} color={AppColor.deepskyblue} />
+                    <Entypo name="dots-three-horizontal" size={15} color={AppColor.darkgrey} />
                 </TouchableOpacity>
                 <Card.Cover
-                    source={{
-                        uri: image,
-                    }}
+                    source={
+                        {
+                            uri: image,
+                        } ?? AppResource.images.img_error_image
+                    }
                 />
                 <Card.Content
                     style={{
@@ -90,10 +102,6 @@ function CardBalconyItem(props) {
                         </View>
                     </View>
                 </Card.Content>
-                {/* <Card.Actions>
-                    <Button>Cancel</Button>
-                    <Button>Ok</Button>
-                </Card.Actions> */}
             </Card>
         </View>
     );

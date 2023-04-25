@@ -1,7 +1,7 @@
 import AppColor from 'general/constants/AppColor';
 import AppResource from 'general/constants/AppResource';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { Card, Title } from 'react-native-paper';
 import Entypo from 'react-native-vector-icons/dist/Entypo';
@@ -14,6 +14,7 @@ CardBalconyItem.propTypes = {
     humidity: PropTypes.number,
     temperature: PropTypes.number,
     onPressEdit: PropTypes.func,
+    onPressDelete: PropTypes.func,
 };
 
 CardBalconyItem.defaultProps = {
@@ -22,11 +23,13 @@ CardBalconyItem.defaultProps = {
     humidity: null,
     temperature: null,
     onPressEdit: null,
+    onPressDelete: null,
 };
 
 function CardBalconyItem(props) {
     // MARK --- Params ---
-    const { image, name, humidity, temperature, onPressEdit } = props;
+    const { image, name, humidity, temperature, onPressEdit, onPressDelete } = props;
+    const [showDropdown, setShowDropdown] = useState(false);
 
     // MARK --- Functions: ---
     function handlePressEdit() {
@@ -34,6 +37,13 @@ function CardBalconyItem(props) {
             onPressEdit();
         }
     }
+
+    function handlePressDelete() {
+        if (onPressDelete) {
+            onPressDelete();
+        }
+    }
+
     return (
         <View
             style={{
@@ -60,10 +70,58 @@ function CardBalconyItem(props) {
                         elevation: 5,
                     }}
                     onPress={() => {
-                        handlePressEdit();
+                        setShowDropdown(!showDropdown);
                     }}>
                     <Entypo name="dots-three-horizontal" size={15} color={AppColor.darkgrey} />
                 </TouchableOpacity>
+
+                <View
+                    style={{
+                        display: showDropdown ? 'flex' : 'none',
+                        position: 'absolute',
+                        top: 35,
+                        right: 10,
+                        zIndex: 20,
+                        borderRadius: 3,
+                        backgroundColor: 'white',
+                        paddingVertical: 10,
+                    }}>
+                    <TouchableOpacity
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            paddingHorizontal: 10,
+                            paddingVertical: 5,
+                        }}
+                        onPress={() => {
+                            handlePressEdit();
+                            setShowDropdown(false);
+                        }}>
+                        <MaterialCommunityIcons name="pencil" size={25} color={AppColor.blue} />
+                        <Text style={{ marginLeft: 10 }}>Chỉnh sửa</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            paddingHorizontal: 10,
+                            paddingVertical: 5,
+                        }}
+                        onPress={() => {
+                            handlePressDelete();
+                            setShowDropdown(false);
+                        }}>
+                        <MaterialCommunityIcons
+                            name="trash-can-outline"
+                            size={25}
+                            color={AppColor.red}
+                        />
+                        <Text style={{ marginLeft: 10 }}>Xóa</Text>
+                    </TouchableOpacity>
+                </View>
+
                 <Card.Cover
                     source={
                         {

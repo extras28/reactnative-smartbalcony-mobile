@@ -29,6 +29,9 @@ import { thunkGetListBalcony } from 'features/Dashboard/dashboardSlice';
 import balconyApi from 'api/balconyApi';
 import variable from 'general/constants/variable';
 import ModalEditBalcony from 'features/Dashboard/components/ModalEditBalcony';
+import ModalDeleteBalcony from 'features/Dashboard/components/ModalDeleteBalcony';
+import { useTranslation } from 'react-i18next';
+import { AppLoadingHelper } from 'general/components/AppLoading';
 
 DashboardHomeScreen.propTypes = {};
 
@@ -38,8 +41,10 @@ function DashboardHomeScreen(props) {
     // MARK --- Params: ---
     const [loading, setLoading] = useState(false);
     const [showingModalEditBalcony, setShowingModalEditBalcony] = useState(false);
+    const [showingModalDeletebalcony, setShowingModalDeleteBalcony] = useState(false);
     const [selectedBalconyItem, setSelectedBalconyItem] = useState(null);
     const dispatch = useDispatch();
+    const { t } = useTranslation();
     const { balconies, isGettingListbalcony } = useSelector(state => state?.dashboard);
 
     // MARK --- Functions: ---
@@ -50,6 +55,24 @@ function DashboardHomeScreen(props) {
             // log;
         } catch (error) {
             console.error(`${sTag} get list balcony error: ${error.message}`);
+        }
+    }
+
+    async function handleDeleteBalcony() {
+        try {
+            AppLoadingHelper.current.show(t('Loading...'));
+            const res = await balconyApi.delete({ balconyId: selectedBalconyItem.balconyId });
+            const { result } = res.data;
+            if (result === 'success') {
+                Utils.toast({
+                    message: t('Cập nhật ban công thành công'),
+                });
+                dispatch(thunkGetListBalcony({}));
+                setShowingModalDeleteBalcony(false);
+            }
+            AppLoadingHelper.current.hide();
+        } catch (error) {
+            console.error(`${sTag} delete balcony error: ${error.message}`);
         }
     }
 
@@ -135,8 +158,12 @@ function DashboardHomeScreen(props) {
                                     humidity={parseInt(item?.humidity ?? 0)}
                                     temperature={parseInt(item?.temperature ?? 0)}
                                     onPressEdit={() => {
-                                        setShowingModalEditBalcony(true);
                                         setSelectedBalconyItem(item);
+                                        setShowingModalEditBalcony(true);
+                                    }}
+                                    onPressDelete={() => {
+                                        setSelectedBalconyItem(item);
+                                        setShowingModalDeleteBalcony(true);
                                     }}
                                 />
                             );
@@ -144,10 +171,26 @@ function DashboardHomeScreen(props) {
                     </ScrollView>
                 </View>
             </ImageBackground>
+
+            {/* modal edit */}
             <ModalEditBalcony
                 show={showingModalEditBalcony}
-                onClose={() => setShowingModalEditBalcony(false)}
+                onClose={() => {
+                    setShowingModalEditBalcony(false);
+                    setSelectedBalconyItem(null);
+                }}
                 balconyItem={selectedBalconyItem}
+            />
+
+            {/* modal delete */}
+            <ModalDeleteBalcony
+                show={showingModalDeletebalcony}
+                onClose={() => {
+                    setShowingModalDeleteBalcony(false);
+                    setSelectedBalconyItem(null);
+                }}
+                balconyItem={{ selectedBalconyItem }}
+                onDelete={handleDeleteBalcony}
             />
         </BaseScreenView>
     );

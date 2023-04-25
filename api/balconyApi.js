@@ -15,5 +15,10 @@ const balconyApi = {
         const url = '/balcony/create';
         return axiosClient.post(url, params);
     },
+
+    delete: params => {
+        const url = '/balcony/delete';
+        return axiosClient.delete(url, { params });
+    },
 };
 export default balconyApi;

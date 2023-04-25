@@ -1,24 +1,23 @@
+import { unwrapResult } from '@reduxjs/toolkit';
+import balconyApi from 'api/balconyApi';
+import { thunkGetListBalcony } from 'features/Dashboard/dashboardSlice';
 import { FastField, Formik } from 'formik';
 import { AppLoadingHelper } from 'general/components/AppLoading';
 import DefaultTextInput from 'general/components/Forms/DefaultTextInput';
 import AppColor from 'general/constants/AppColor';
+import AppResource from 'general/constants/AppResource';
 import DeviceConstants from 'general/constants/DeviceConstants';
 import GlobalStyle from 'general/constants/GlobalStyle';
 import Utils from 'general/utils/Utils';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, TouchableOpacity, View, Image } from 'react-native';
-import Modal from 'react-native-modal';
-import * as Yup from 'yup';
-import _ from 'lodash';
-import AppStyle from 'general/constants/AppStyle';
-import AppResource from 'general/constants/AppResource';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { thunkGetListBalcony, thunkUpdateBalcony } from 'features/Dashboard/dashboardSlice';
-import { unwrapResult } from '@reduxjs/toolkit';
+import Modal from 'react-native-modal';
 import { useDispatch } from 'react-redux';
-import balconyApi from 'api/balconyApi';
+import * as Yup from 'yup';
 
 ModalEditBalcony.propTypes = {
     show: PropTypes.bool,
@@ -61,11 +60,7 @@ function ModalEditBalcony(props) {
             refSelectedAsset.current = assets[0];
             const uri = assets[0].uri;
 
-            // const base64 = assets[0].base64;
             setSelectedBalconyImage(uri);
-            // console.log(assets);
-            // const image = await Utils.uploadCloudinary(assets[0]);
-            // console.log(image);
         }
     }
 
@@ -131,8 +126,9 @@ function ModalEditBalcony(props) {
                                         handleClose();
                                     }
                                 } else {
-                                    const res = unwrapResult(await balconyApi.create(params));
-                                    const { result, balcony } = res;
+                                    const res = await balconyApi.create(params);
+                                    console.log(res);
+                                    const { result, balcony } = res.data;
                                     if (result === 'success') {
                                         Utils.toast({
                                             message: t('Thêm ban công thành công'),

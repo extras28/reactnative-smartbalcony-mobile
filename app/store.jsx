@@ -8,6 +8,7 @@ import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 
 import authReducer from '../features/Auth/authSlice';
 import dashboardSlice from '../features/Dashboard/dashboardSlice';
+import plantReducer from '../features/Plant/plantSlice';
 
 import appReducer from './appSlice';
 
@@ -15,6 +16,7 @@ const reducers = combineReducers({
     app: appReducer,
     auth: authReducer,
     dashboard: dashboardSlice,
+    plant: plantReducer,
 });
 
 /**

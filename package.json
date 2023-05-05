@@ -10,9 +10,10 @@
     "test": "jest"
   },
   "dependencies": {
+    "@good-react-native/gradient-border": "^1.0.2",
     "@os-team/i18next-react-native-language-detector": "^1.0.22",
     "@react-native-async-storage/async-storage": "^1.17.12",
-    "@react-native-masked-view/masked-view": "^0.2.8",
+    "@react-native-masked-view/masked-view": "^0.2.9",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/stack": "^6.3.16",
     "@reduxjs/toolkit": "^1.9.3",
@@ -28,6 +29,7 @@
     "react": "18.2.0",
     "react-i18next": "^12.2.0",
     "react-native": "0.71.5",
+    "react-native-actions-sheet": "^0.8.29",
     "react-native-animated-spinkit": "^1.5.2",
     "react-native-backdrop": "^2.1.2",
     "react-native-drop-shadow": "^0.0.6",

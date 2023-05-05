@@ -15,6 +15,7 @@ CardBalconyItem.propTypes = {
     temperature: PropTypes.number,
     onPressEdit: PropTypes.func,
     onPressDelete: PropTypes.func,
+    onPress: PropTypes.func,
 };
 
 CardBalconyItem.defaultProps = {
@@ -24,11 +25,12 @@ CardBalconyItem.defaultProps = {
     temperature: null,
     onPressEdit: null,
     onPressDelete: null,
+    onPress: null,
 };
 
 function CardBalconyItem(props) {
     // MARK --- Params ---
-    const { image, name, humidity, temperature, onPressEdit, onPressDelete } = props;
+    const { image, name, humidity, temperature, onPressEdit, onPressDelete, onPress } = props;
     const [showDropdown, setShowDropdown] = useState(false);
 
     // MARK --- Functions: ---
@@ -45,123 +47,134 @@ function CardBalconyItem(props) {
     }
 
     return (
-        <View
-            style={{
-                marginTop: 20,
+        <TouchableOpacity
+            onPress={() => {
+                if (onPress) {
+                    onPress();
+                }
             }}>
-            <Card style={{ position: 'relative' }}>
-                {/* <Card.Title title="Card Title" /> */}
-                <TouchableOpacity
-                    style={{
-                        position: 'absolute',
-                        top: 10,
-                        right: 10,
-                        zIndex: 20,
-                        backgroundColor: 'white',
-                        padding: 5,
-                        borderRadius: 5,
-                        shadowColor: 'black',
-                        shadowOffset: {
-                            width: 0,
-                            height: 9,
-                        },
-                        shadowOpacity: 0.15,
-                        shadowRadius: 10,
-                        elevation: 5,
-                    }}
-                    onPress={() => {
-                        setShowDropdown(!showDropdown);
-                    }}>
-                    <Entypo name="dots-three-horizontal" size={15} color={AppColor.darkgrey} />
-                </TouchableOpacity>
-
-                <View
-                    style={{
-                        display: showDropdown ? 'flex' : 'none',
-                        position: 'absolute',
-                        top: 35,
-                        right: 10,
-                        zIndex: 20,
-                        borderRadius: 3,
-                        backgroundColor: 'white',
-                        paddingVertical: 10,
-                    }}>
+            <View
+                style={{
+                    marginTop: 20,
+                }}>
+                <Card style={{ position: 'relative' }}>
+                    {/* <Card.Title title="Card Title" /> */}
                     <TouchableOpacity
                         style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            paddingHorizontal: 10,
-                            paddingVertical: 5,
+                            position: 'absolute',
+                            top: 10,
+                            right: 10,
+                            zIndex: 20,
+                            backgroundColor: 'white',
+                            padding: 5,
+                            borderRadius: 5,
+                            shadowColor: 'black',
+                            shadowOffset: {
+                                width: 0,
+                                height: 9,
+                            },
+                            shadowOpacity: 0.15,
+                            shadowRadius: 10,
+                            elevation: 5,
                         }}
                         onPress={() => {
-                            handlePressEdit();
-                            setShowDropdown(false);
+                            setShowDropdown(!showDropdown);
                         }}>
-                        <MaterialCommunityIcons name="pencil" size={25} color={AppColor.blue} />
-                        <Text style={{ marginLeft: 10 }}>Chỉnh sửa</Text>
+                        <Entypo name="dots-three-horizontal" size={15} color={AppColor.darkgrey} />
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            paddingHorizontal: 10,
-                            paddingVertical: 5,
-                        }}
-                        onPress={() => {
-                            handlePressDelete();
-                            setShowDropdown(false);
-                        }}>
-                        <MaterialCommunityIcons
-                            name="trash-can-outline"
-                            size={25}
-                            color={AppColor.red}
-                        />
-                        <Text style={{ marginLeft: 10 }}>Xóa</Text>
-                    </TouchableOpacity>
-                </View>
 
-                <Card.Cover
-                    source={
-                        {
-                            uri: image,
-                        } ?? AppResource.images.img_error_image
-                    }
-                />
-                <Card.Content
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'flex-start',
-                    }}>
-                    <Title>{name}</Title>
-                    {/* <Paragraph>Card content</Paragraph> */}
-                    <View>
-                        <View
+                    <View
+                        style={{
+                            display: showDropdown ? 'flex' : 'none',
+                            position: 'absolute',
+                            top: 35,
+                            right: 10,
+                            zIndex: 20,
+                            borderRadius: 3,
+                            backgroundColor: 'white',
+                            paddingVertical: 10,
+                        }}>
+                        <TouchableOpacity
                             style={{
                                 display: 'flex',
                                 flexDirection: 'row',
                                 alignItems: 'center',
-                                marginVertical: 10,
+                                paddingHorizontal: 10,
+                                paddingVertical: 5,
+                            }}
+                            onPress={() => {
+                                handlePressEdit();
+                                setShowDropdown(false);
+                            }}>
+                            <MaterialCommunityIcons name="pencil" size={25} color={AppColor.blue} />
+                            <Text style={{ marginLeft: 10 }}>Chỉnh sửa</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                paddingHorizontal: 10,
+                                paddingVertical: 5,
+                            }}
+                            onPress={() => {
+                                handlePressDelete();
+                                setShowDropdown(false);
                             }}>
                             <MaterialCommunityIcons
-                                name="coolant-temperature"
+                                name="trash-can-outline"
                                 size={25}
-                                color={AppColor.fireEngineRed}
+                                color={AppColor.red}
                             />
-                            <Text> {temperature} °C</Text>
-                        </View>
-                        <View
-                            style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                            <Ionicons name="water" size={25} color={AppColor.dodgerblue} />
-                            <Text> {humidity} %</Text>
-                        </View>
+                            <Text style={{ marginLeft: 10 }}>Xóa</Text>
+                        </TouchableOpacity>
                     </View>
-                </Card.Content>
-            </Card>
-        </View>
+
+                    <Card.Cover
+                        source={
+                            {
+                                uri: image,
+                            } ?? AppResource.images.img_error_image
+                        }
+                    />
+                    <Card.Content
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'flex-start',
+                        }}>
+                        <Title>{name}</Title>
+                        {/* <Paragraph>Card content</Paragraph> */}
+                        <View>
+                            <View
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    marginVertical: 10,
+                                }}>
+                                <MaterialCommunityIcons
+                                    name="coolant-temperature"
+                                    size={25}
+                                    color={AppColor.fireEngineRed}
+                                />
+                                <Text> {temperature} °C</Text>
+                            </View>
+                            <View
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                }}>
+                                <Ionicons name="water" size={25} color={AppColor.dodgerblue} />
+                                <Text> {humidity} %</Text>
+                            </View>
+                        </View>
+                    </Card.Content>
+                </Card>
+            </View>
+        </TouchableOpacity>
     );
 }
 

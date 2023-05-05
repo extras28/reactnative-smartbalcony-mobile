@@ -1,37 +1,31 @@
-import React, { useEffect, useCallback, useState } from 'react';
-import PropTypes from 'prop-types';
-import {
-    Text,
-    View,
-    TouchableOpacity,
-    ImageBackground,
-    StatusBar,
-    ScrollView,
-    RefreshControl,
-} from 'react-native';
+import { unwrapResult } from '@reduxjs/toolkit';
+import balconyApi from 'api/balconyApi';
+import CardBalconyItem from 'features/Dashboard/components/CardBalconyItem';
+import ModalDeleteBalcony from 'features/Dashboard/components/ModalDeleteBalcony';
+import ModalEditBalcony from 'features/Dashboard/components/ModalEditBalcony';
+import { thunkGetListBalcony } from 'features/Dashboard/dashboardSlice';
+import { thunkGetListPlant } from 'features/Plant/plantSlice';
+import { AppLoadingHelper } from 'general/components/AppLoading';
 import BaseScreenView from 'general/components/BaseScreenView/index';
+import AppColor from 'general/constants/AppColor';
+import AppData from 'general/constants/AppData';
+import AppResource from 'general/constants/AppResource';
+import Global from 'general/constants/Global';
+import NavigationHelper from 'general/helpers/NavigationHelper';
+import Utils from 'general/utils/Utils';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import {
+    ImageBackground,
+    RefreshControl,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/dist/AntDesign';
 import FontAwesome5Icon from 'react-native-vector-icons/dist/FontAwesome5';
-import AppColor from 'general/constants/AppColor';
-import { check, PERMISSIONS, RESULTS, request } from 'react-native-permissions';
-import Utils from 'general/utils/Utils';
-import Geolocation from 'react-native-geolocation-service';
-import Global from 'general/constants/Global';
-import AppBackButton from 'general/components/AppBackButton';
-import AppResource from 'general/constants/AppResource';
-import CardBalconyItem from 'features/Dashboard/components/CardBalconyItem';
-import AppStyle from 'general/constants/AppStyle';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import GlobalStyle from 'general/constants/GlobalStyle';
 import { useDispatch, useSelector } from 'react-redux';
-import { unwrapResult } from '@reduxjs/toolkit';
-import { thunkGetListBalcony } from 'features/Dashboard/dashboardSlice';
-import balconyApi from 'api/balconyApi';
-import variable from 'general/constants/variable';
-import ModalEditBalcony from 'features/Dashboard/components/ModalEditBalcony';
-import ModalDeleteBalcony from 'features/Dashboard/components/ModalDeleteBalcony';
-import { useTranslation } from 'react-i18next';
-import { AppLoadingHelper } from 'general/components/AppLoading';
 
 DashboardHomeScreen.propTypes = {};
 
@@ -51,8 +45,6 @@ function DashboardHomeScreen(props) {
     async function getListBalcony() {
         try {
             const res = unwrapResult(await dispatch(thunkGetListBalcony({})));
-            // const res = await balconyApi.getListBalcony();
-            // log;
         } catch (error) {
             console.error(`${sTag} get list balcony error: ${error.message}`);
         }
@@ -152,6 +144,13 @@ function DashboardHomeScreen(props) {
                         {balconies?.map((item, index) => {
                             return (
                                 <CardBalconyItem
+                                    onPress={() => {
+                                        Global.balconyItem = item;
+                                        dispatch(thunkGetListPlant({ balconyId: item.balconyId }));
+                                        NavigationHelper.goScreen(
+                                            AppData.screens.PLANT_HOME_SCREEN,
+                                        );
+                                    }}
                                     key={index}
                                     image={item?.image}
                                     name={item?.name}
@@ -190,7 +189,10 @@ function DashboardHomeScreen(props) {
                     setSelectedBalconyItem(null);
                 }}
                 balconyItem={{ selectedBalconyItem }}
-                onDelete={handleDeleteBalcony}
+                onDelete={() => {
+                    handleDeleteBalcony();
+                    setSelectedBalconyItem(null);
+                }}
             />
         </BaseScreenView>
     );

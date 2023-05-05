@@ -23,6 +23,8 @@ import { persistor, store } from './app/store';
 import LoginScreen from './features/Auth/screens/LoginScreen';
 import DashboardHomeScreen from './features/Dashboard/screens/DashboardHomeScreen';
 import AppData from './general/constants/AppData';
+import PlantHomeScreen from 'features/Plant/screens/PlantHomeScreen';
+import PlantDetailScreen from 'features/Plant/screens/PlantDettailScreen';
 
 const Stack = createStackNavigator();
 
@@ -60,7 +62,7 @@ function RootComponent() {
 function AppNavigator() {
     //TODO: initialRouteName
     let initialRouteName = AppData.screens.LAUNCH_SCREEN;
-    // let initialRouteName = AppData.screens.DASHBOARD_HOME_SCREEN;
+    // let initialRouteName = AppData.screens.PLANT_HOME_SCREEN;
     return (
         <NavigationContainer ref={navigationRef}>
             <Stack.Navigator initialRouteName={initialRouteName}>
@@ -82,6 +84,16 @@ function AppNavigator() {
                 <Stack.Screen
                     name={AppData.screens.DASHBOARD_HOME_SCREEN}
                     component={DashboardHomeScreen}
+                    options={{ animationEnabled: true, header: () => null }}
+                />
+                <Stack.Screen
+                    name={AppData.screens.PLANT_HOME_SCREEN}
+                    component={PlantHomeScreen}
+                    options={{ animationEnabled: true, header: () => null }}
+                />
+                <Stack.Screen
+                    name={AppData.screens.PLANT_DETAIL_SCREEN}
+                    component={PlantDetailScreen}
                     options={{ animationEnabled: true, header: () => null }}
                 />
             </Stack.Navigator>

@@ -21,12 +21,36 @@ const plantSlice = createSlice({
 
         plantDetail: {},
         isGettingDetail: false,
+
+        listIsWatering: [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+        ],
     },
     reducers: {
         toggleAutoMode: result => {
             if (result === 'success') {
                 state.plantDetail.autoMode = !state.plantDetail.autoMode;
             }
+        },
+        setListIsWatering: (state, action) => {
+            const { order, status } = action.payload;
+            console.log(action.payload);
+            state.listIsWatering[order] = status;
         },
     },
     extraReducers: {
@@ -61,6 +85,6 @@ const plantSlice = createSlice({
 });
 
 const { reducer, actions } = plantSlice;
-export const { toggleAutoMode, setPlantBreakpoint } = actions;
+export const { toggleAutoMode, setListIsWatering } = actions;
 
 export default reducer;

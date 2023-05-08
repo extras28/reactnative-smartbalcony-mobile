@@ -130,7 +130,7 @@ function DashboardHomeScreen(props) {
                         style={{ paddingHorizontal: 20 }}
                         refreshControl={
                             <RefreshControl
-                                refreshing={loading}
+                                refreshing={isGettingListbalcony}
                                 tintColor={AppColor.white}
                                 onRefresh={() => {
                                     console.log('refresh');

@@ -19,13 +19,17 @@ import { thunkGetListPlant, thunkGetPlantDetail } from 'features/Plant/plantSlic
 import Global from 'general/constants/Global';
 import NavigationHelper from 'general/helpers/NavigationHelper';
 import AppData from 'general/constants/AppData';
+import ModalEditPlant from 'features/Plant/components/ModalEditPlant';
 
 PlantHomeScreen.propTypes = {};
 
 function PlantHomeScreen(props) {
     // MARK --- Params: ---
-    const [loading, setLoading] = useState(false);
+    const [showingModalEditPlant, setShowingModalEditPlant] = useState(false);
+    const [showingModalDeletePlant, setShowingModalDeletePlant] = useState(false);
+    const [selectedPlantItem, setSelectedPlantItem] = useState(null);
     const { plants, isGettingPlant } = useSelector(state => state?.plant);
+    const [loading, setLoading] = useState(isGettingPlant);
     const dispatch = useDispatch();
     return (
         <BaseScreenView
@@ -72,7 +76,7 @@ function PlantHomeScreen(props) {
                         </Text>
                         <TouchableOpacity
                             onPress={() => {
-                                // setShowingModalEditBalcony(true);
+                                setShowingModalEditPlant(true);
                             }}>
                             <AntDesignIcon
                                 name="pluscircleo"
@@ -85,7 +89,7 @@ function PlantHomeScreen(props) {
                         style={{ paddingHorizontal: 20 }}
                         refreshControl={
                             <RefreshControl
-                                refreshing={loading}
+                                refreshing={isGettingPlant}
                                 tintColor={AppColor.white}
                                 onRefresh={() => {
                                     console.log('refresh');
@@ -114,6 +118,16 @@ function PlantHomeScreen(props) {
                     </ScrollView>
                 </View>
             </ImageBackground>
+
+            {/* modal edit plant */}
+            <ModalEditPlant
+                show={showingModalEditPlant}
+                onClose={() => {
+                    setShowingModalEditPlant(false);
+                    setSelectedPlantItem(null);
+                }}
+                balconyItem={selectedPlantItem}
+            />
         </BaseScreenView>
     );
 }

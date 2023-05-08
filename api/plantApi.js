@@ -25,6 +25,11 @@ const plantApi = {
         const url = '/plant/breakpoint';
         return axiosClient.post(url, params);
     },
+
+    createPlant: params => {
+        const url = '/plant/create';
+        return axiosClient.post(url, params);
+    },
 };
 
 export default plantApi;

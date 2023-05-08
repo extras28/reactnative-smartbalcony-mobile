@@ -1,29 +1,27 @@
-import React, { useRef, useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import {
-    ImageBackground,
-    View,
-    Text,
-    Image,
-    Switch,
-    ScrollView,
-    RefreshControl,
-    TouchableOpacity,
-} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { GradientBorderView } from '@good-react-native/gradient-border';
+import plantApi from 'api/plantApi';
+import CardPlantAction from 'features/Plant/components/CardPlantAction';
+import { setListIsWatering, thunkGetPlantDetail, toggleAutoMode } from 'features/Plant/plantSlice';
+import { AppLoadingHelper } from 'general/components/AppLoading';
 import BaseScreenView from 'general/components/BaseScreenView';
 import AppColor from 'general/constants/AppColor';
-import AppResource from 'general/constants/AppResource';
-import Entypo from 'react-native-vector-icons/dist/Entypo';
-import DeviceConstants from 'general/constants/DeviceConstants';
-import { useDispatch, useSelector } from 'react-redux';
-import plantApi from 'api/plantApi';
-import { setPlantBreakpoint, thunkGetPlantDetail, toggleAutoMode } from 'features/Plant/plantSlice';
-import CardPlantAction from 'features/Plant/components/CardPlantItem/CardPlantAction';
-import Utils from 'general/utils/Utils';
-import ActionSheet from 'react-native-actions-sheet';
 import AppData from 'general/constants/AppData';
+import AppResource from 'general/constants/AppResource';
+import Utils from 'general/utils/Utils';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+    Image,
+    ImageBackground,
+    RefreshControl,
+    ScrollView,
+    Switch,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
+import ActionSheet from 'react-native-actions-sheet';
+import Entypo from 'react-native-vector-icons/dist/Entypo';
+import { useDispatch, useSelector } from 'react-redux';
 
 PlantDetailScreen.propTypes = {};
 
@@ -32,13 +30,18 @@ const sTag = '[PlantDetailScreen]';
 function PlantDetailScreen(props) {
     // MARK --- Params: ---
     const [loading, setLoading] = useState(false);
-    const { plantDetail, isGettingDetail } = useSelector(state => state?.plant);
+    const { plantDetail, isGettingDetail, listIsWatering } = useSelector(state => state?.plant);
     const [isEnabled, setIsEnabled] = useState(plantDetail?.autoMode);
-    const [isWatering, setIsWatering] = useState(false);
+    const [isWatering, setIsWatering] = useState(
+        // plantDetail?.plantId
+        //     ?
+        listIsWatering[parseInt(plantDetail?.plantId?.slice(17, 19))],
+        // : false,
+        // false,
+    );
     const dispatch = useDispatch();
     const actionSheetRef = useRef(null);
     const [breakpoint, setBreakpoint] = useState(plantDetail?.soilMoistureBreakpoint);
-
     // MARK --- Functions: ---
     async function handleToggleAutoMode(status) {
         try {
@@ -69,6 +72,12 @@ function PlantDetailScreen(props) {
     async function handleManualWatering(code) {
         try {
             setIsWatering(!isWatering);
+            dispatch(
+                setListIsWatering({
+                    order: parseInt(plantDetail?.plantId?.slice(17, 19)),
+                    status: code,
+                }),
+            );
             const res = await plantApi.manualControl({
                 plantId: plantDetail?.plantId,
                 requestCode: code ? 1 : 0,
@@ -97,6 +106,18 @@ function PlantDetailScreen(props) {
         }
     }
 
+    // MARK --- Hooks: ---
+    useEffect(() => {
+        setIsWatering(listIsWatering[parseInt(plantDetail?.plantId?.slice(17, 19))]);
+    }, [listIsWatering, plantDetail]);
+
+    useEffect(() => {
+        if (isGettingDetail) {
+            AppLoadingHelper.current.show('Loading...');
+        } else {
+            AppLoadingHelper.current.hide();
+        }
+    }, [plantDetail, isGettingDetail]);
     return (
         <BaseScreenView
             safeAreaEdges={['left', 'right']}
@@ -109,118 +130,128 @@ function PlantDetailScreen(props) {
                     flex: 1,
                 }}
                 blurRadius={5}>
-                <ScrollView
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={loading}
-                            tintColor={AppColor.white}
-                            onRefresh={() => {
-                                console.log(`${sTag} refresh`);
-                                dispatch(thunkGetPlantDetail({ plantId: plantDetail?.plantId }));
-                            }}
-                        />
-                    }>
-                    <View
-                        style={{
-                            flex: 1,
-                            paddingTop: 40,
-                        }}>
+                {!isGettingDetail && (
+                    <ScrollView
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={loading}
+                                tintColor={AppColor.white}
+                                onRefresh={() => {
+                                    console.log(`${sTag} refresh`);
+                                    dispatch(
+                                        thunkGetPlantDetail({ plantId: plantDetail?.plantId }),
+                                    );
+                                }}
+                            />
+                        }>
                         <View
                             style={{
-                                display: 'flex',
-                                justifyContent: 'space-around',
-                                alignItems: 'center',
-                                height: 600,
-                                paddingHorizontal: 30,
+                                flex: 1,
+                                paddingTop: 40,
                             }}>
-                            <Text style={{ fontSize: 20, color: '#000' }}>{plantDetail?.name}</Text>
-                            <GradientBorderView
-                                gradientProps={{
-                                    colors: ['#34a0a4', '#b5e48c'],
-                                }}
+                            <View
                                 style={{
-                                    borderWidth: 5,
-                                    borderRadius: 10,
-                                    width: '100%',
-                                    height: 200,
-                                }}>
-                                <Image
-                                    source={{ uri: plantDetail?.image }}
-                                    style={{ width: '100%', height: '100%', resizeMode: 'cover' }}
-                                />
-                            </GradientBorderView>
-                            <GradientBorderView
-                                gradientProps={{
-                                    colors: ['#ade8f4', '#0077b6'],
-                                }}
-                                style={{
-                                    borderWidth: 5,
-                                    borderRadius: 100,
-                                    height: 200,
-                                    width: 200,
                                     display: 'flex',
-                                    justifyContent: 'center',
+                                    justifyContent: 'space-around',
                                     alignItems: 'center',
-                                    padding: 20,
+                                    height: 600,
+                                    paddingHorizontal: 30,
                                 }}>
-                                <View
+                                <Text style={{ fontSize: 20, color: '#000' }}>
+                                    {plantDetail?.name}
+                                </Text>
+                                <GradientBorderView
+                                    gradientProps={{
+                                        colors: ['#34a0a4', '#b5e48c'],
+                                    }}
                                     style={{
-                                        width: 170,
-                                        height: 170,
-                                        backgroundColor: '#FFFFFF',
-                                        borderRadius: 85,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        justifyContent: 'space-evenly',
-                                        alignItems: 'center',
+                                        borderWidth: 5,
+                                        borderRadius: 10,
+                                        width: '100%',
+                                        height: 200,
                                     }}>
-                                    <Entypo name="water" size={40} color="#00b4d8" />
-                                    <Text style={{ fontWeight: '700', fontSize: 30 }}>{`${
-                                        plantDetail?.soilMoisture ?? 0
-                                    } %`}</Text>
+                                    <Image
+                                        source={{ uri: plantDetail?.image }}
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            resizeMode: 'cover',
+                                        }}
+                                    />
+                                </GradientBorderView>
+                                <GradientBorderView
+                                    gradientProps={{
+                                        colors: ['#ade8f4', '#0077b6'],
+                                    }}
+                                    style={{
+                                        borderWidth: 5,
+                                        borderRadius: 100,
+                                        height: 200,
+                                        width: 200,
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        padding: 20,
+                                    }}>
+                                    <View
+                                        style={{
+                                            width: 170,
+                                            height: 170,
+                                            backgroundColor: '#FFFFFF',
+                                            borderRadius: 85,
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            justifyContent: 'space-evenly',
+                                            alignItems: 'center',
+                                        }}>
+                                        <Entypo name="water" size={40} color="#00b4d8" />
+                                        <Text style={{ fontWeight: '700', fontSize: 30 }}>{`${
+                                            plantDetail?.soilMoisture ?? 0
+                                        } %`}</Text>
+                                    </View>
+                                </GradientBorderView>
+                                <View style={{ display: 'flex', flexDirection: 'row' }}>
+                                    <Text>Tự động tưới: </Text>
+                                    <Switch
+                                        thumbColor={isEnabled ? '#00b4d8' : '#f4f3f4'}
+                                        onValueChange={() => handleToggleAutoMode(!isEnabled)}
+                                        value={isEnabled}
+                                    />
                                 </View>
-                            </GradientBorderView>
-                            <View style={{ display: 'flex', flexDirection: 'row' }}>
-                                <Text>Tự động tưới: </Text>
-                                <Switch
-                                    thumbColor={isEnabled ? '#00b4d8' : '#f4f3f4'}
-                                    onValueChange={() => handleToggleAutoMode(!isEnabled)}
-                                    value={isEnabled}
-                                />
                             </View>
                         </View>
-                    </View>
 
-                    <View style={{ paddingHorizontal: 30 }}>
-                        <CardPlantAction
-                            title="Ngưỡng độ ẩm"
-                            disabled={!isEnabled}
-                            additionalElement={
-                                <TouchableOpacity
-                                    disabled={!isEnabled}
-                                    onPress={() => {
-                                        actionSheetRef.current?.show();
-                                    }}>
-                                    <Text style={{ color: AppColor.crimson }}>
-                                        {`${breakpoint ? breakpoint + '%' : 'chọn'}`}{' '}
-                                    </Text>
-                                </TouchableOpacity>
-                            }
-                        />
-                        <CardPlantAction
-                            title="Tưới cây"
-                            disabled={isEnabled}
-                            additionalElement={
-                                <Switch
-                                    thumbColor={isWatering ? '#00b4d8' : '#f4f3f4'}
-                                    onValueChange={() => handleManualWatering(!isWatering)}
-                                    value={isWatering}
-                                    disabled={isEnabled}
-                                />
-                            }
-                        />
-                    </View>
-                </ScrollView>
+                        <View style={{ paddingHorizontal: 30 }}>
+                            <CardPlantAction
+                                title="Ngưỡng độ ẩm"
+                                disabled={!isEnabled}
+                                additionalElement={
+                                    <TouchableOpacity
+                                        disabled={!isEnabled}
+                                        onPress={() => {
+                                            actionSheetRef.current?.show();
+                                        }}>
+                                        <Text style={{ color: AppColor.crimson }}>
+                                            {`${breakpoint ? breakpoint + '%' : 'chọn'}`}{' '}
+                                        </Text>
+                                    </TouchableOpacity>
+                                }
+                            />
+                            <CardPlantAction
+                                title="Tưới cây"
+                                disabled={isEnabled}
+                                additionalElement={
+                                    <Switch
+                                        thumbColor={isWatering ? '#00b4d8' : '#f4f3f4'}
+                                        onValueChange={() => handleManualWatering(!isWatering)}
+                                        value={isWatering}
+                                        disabled={isEnabled}
+                                    />
+                                }
+                            />
+                        </View>
+                    </ScrollView>
+                )}
             </ImageBackground>
             <ActionSheet ref={actionSheetRef} containerStyle={{ height: '30%' }}>
                 <ScrollView>

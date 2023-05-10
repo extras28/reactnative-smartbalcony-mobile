@@ -20,8 +20,15 @@ import Global from 'general/constants/Global';
 import NavigationHelper from 'general/helpers/NavigationHelper';
 import AppData from 'general/constants/AppData';
 import ModalEditPlant from 'features/Plant/components/ModalEditPlant';
+import ModalDeleteBalcony from 'features/Dashboard/components/ModalDeleteBalcony';
+import { AppLoadingHelper } from 'general/components/AppLoading';
+import plantApi from 'api/plantApi';
+import { useTranslation } from 'react-i18next';
+import Utils from 'general/utils/Utils';
 
 PlantHomeScreen.propTypes = {};
+
+const sTag = '[PlantHomeScreen]';
 
 function PlantHomeScreen(props) {
     // MARK --- Params: ---
@@ -31,6 +38,30 @@ function PlantHomeScreen(props) {
     const { plants, isGettingPlant } = useSelector(state => state?.plant);
     const [loading, setLoading] = useState(isGettingPlant);
     const dispatch = useDispatch();
+    const { t } = useTranslation();
+
+    // MARK --- Functions: ---
+    async function handleDeletePlant() {
+        try {
+            AppLoadingHelper.current.show(t('Loading...'));
+            const res = await plantApi.deletePlant({ _id: selectedPlantItem._id });
+            const { result } = res.data;
+            if (result === 'success') {
+                Utils.toast({
+                    message: t('Xóa cây thành công'),
+                });
+                dispatch(
+                    thunkGetListPlant({
+                        balconyId: Global.balconyItem.balconyId,
+                    }),
+                );
+                setShowingModalDeletePlant(false);
+            }
+            AppLoadingHelper.current.hide();
+        } catch (error) {
+            console.error(`${sTag} delete plant error: ${error.message}`);
+        }
+    }
     return (
         <BaseScreenView
             safeAreaEdges={['left', 'right']}
@@ -112,6 +143,14 @@ function PlantHomeScreen(props) {
                                             AppData.screens.PLANT_DETAIL_SCREEN,
                                         );
                                     }}
+                                    onPressEdit={() => {
+                                        setSelectedPlantItem(item);
+                                        setShowingModalEditPlant(true);
+                                    }}
+                                    onPressDelete={() => {
+                                        setSelectedPlantItem(item);
+                                        setShowingModalDeletePlant(true);
+                                    }}
                                 />
                             );
                         })}
@@ -126,7 +165,23 @@ function PlantHomeScreen(props) {
                     setShowingModalEditPlant(false);
                     setSelectedPlantItem(null);
                 }}
+                plantItem={selectedPlantItem}
+            />
+
+            {/* modal delete */}
+            <ModalDeleteBalcony
+                show={showingModalDeletePlant}
+                onClose={() => {
+                    setShowingModalDeletePlant(false);
+                    setSelectedPlantItem(null);
+                }}
                 balconyItem={selectedPlantItem}
+                onDelete={() => {
+                    handleDeletePlant();
+                    setSelectedPlantItem(null);
+                }}
+                title="Xóa ban công"
+                isBalcony={false}
             />
         </BaseScreenView>
     );

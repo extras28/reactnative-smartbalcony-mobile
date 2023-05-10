@@ -30,6 +30,16 @@ const plantApi = {
         const url = '/plant/create';
         return axiosClient.post(url, params);
     },
+
+    updatePlant: params => {
+        const url = '/plant/update';
+        return axiosClient.put(url, params);
+    },
+
+    deletePlant: params => {
+        const url = '/plant/delete';
+        return axiosClient.delete(url, { params });
+    },
 };
 
 export default plantApi;

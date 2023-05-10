@@ -221,7 +221,6 @@ const Utils = {
     uploadCloudinary: async file => {
         try {
             // const formData = new FormData();
-            console.log(file);
             // formData.append('file', {
             //     uri: file.uri,
             //     type: file.type,

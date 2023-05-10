@@ -25,6 +25,8 @@ ModalDeleteBalcony.propTypes = {
     onClose: PropTypes.func,
     balconyItem: PropTypes.object,
     onDelete: PropTypes.func,
+    title: PropTypes.string,
+    isBalcony: PropTypes.bool,
 };
 
 ModalDeleteBalcony.defaultProps = {
@@ -32,13 +34,15 @@ ModalDeleteBalcony.defaultProps = {
     onClose: null,
     balconyItem: {},
     onDelete: null,
+    title: '',
+    isBalcony: true,
 };
 
 const sTag = '[ModalDeleteBalcony]';
 
 function ModalDeleteBalcony(props) {
     // MARK --- Params: ---
-    const { show, onClose, balconyItem, onDelete } = props;
+    const { show, onClose, balconyItem, onDelete, title, isBalcony } = props;
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -94,7 +98,7 @@ function ModalDeleteBalcony(props) {
                                 borderBottomWidth: 0.5,
                             }}>
                             <Text style={{ fontWeight: '700', color: AppColor.black }}>
-                                Xóa ban công
+                                {title}
                             </Text>
                             {/* <FontAwesome name="close" size={20} color={AppColor.black} /> */}
                         </View>
@@ -124,7 +128,11 @@ function ModalDeleteBalcony(props) {
                                     color={AppColor.fireEngineRed}
                                 />
                             </View>
-                            <Text>{`Bạn có chắc muốn xóa ban công ${balconyItem?.selectedBalconyItem?.name} ?`}</Text>
+                            {isBalcony ? (
+                                <Text>{`Bạn có chắc muốn xóa ban công ${balconyItem?.selectedBalconyItem?.name} ?`}</Text>
+                            ) : (
+                                <Text>{`Bạn có chắc muốn xóa cây ${balconyItem?.name} ?`}</Text>
+                            )}
                         </View>
 
                         {/* modal footer */}

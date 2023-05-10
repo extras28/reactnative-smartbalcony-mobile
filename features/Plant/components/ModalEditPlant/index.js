@@ -67,7 +67,6 @@ function ModalEditPlant(props) {
             setSelectedPlantImage(uri);
         }
     }
-
     return (
         <Modal
             isVisible={show}
@@ -95,9 +94,9 @@ function ModalEditPlant(props) {
                     }}>
                     <Formik
                         initialValues={{
-                            balconyId: plantItem?.balconyId ?? '',
+                            plantId: plantItem?.plantId ?? '',
                             name: plantItem?.name ?? '',
-                            plantOrder: plantItem?.plantOrder ?? '',
+                            plantOrder: parseInt(plantItem?.plantId?.slice(17, 19)) ?? '',
                         }}
                         validationSchema={Yup.object({
                             name: Yup.string().required(t('Bắt buộc')),
@@ -114,14 +113,18 @@ function ModalEditPlant(props) {
                                     );
                                 }
                                 if (isEditMode) {
-                                    const res = await plantApi.update(params);
+                                    const res = await plantApi.updatePlant(params);
                                     const { result, plant } = res.data;
                                     console.log(res);
                                     if (result === 'success') {
                                         Utils.toast({
-                                            message: t('Cập nhật ban công thành công'),
+                                            message: t('Cập nhật thông tin cây thành công'),
                                         });
-                                        dispatch(thunkGetListPlant({}));
+                                        dispatch(
+                                            thunkGetListPlant({
+                                                balconyId: Global.balconyItem.balconyId,
+                                            }),
+                                        );
                                         handleClose();
                                     }
                                 } else {
@@ -227,73 +230,78 @@ function ModalEditPlant(props) {
 
                                         {/* plant order */}
 
-                                        <FastField name="plantOrder">
-                                            {({ field, form, meta }) => (
-                                                <View
-                                                    style={{
-                                                        ...GlobalStyle.Margin.bottom(),
-                                                    }}>
-                                                    <View>
-                                                        <View
-                                                            style={{
-                                                                display: 'flex',
-                                                                flexDirection: 'row',
-                                                                marginBottom: 6,
-                                                            }}>
-                                                            <Text
-                                                                style={{
-                                                                    fontFamily:
-                                                                        AppResource.Fonts.semiBold,
-                                                                    fontSize: 14,
-                                                                    color: AppColor.grey80,
-                                                                }}>
-                                                                Chân tưới{' '}
-                                                            </Text>
-                                                            <Text
-                                                                style={{
-                                                                    fontFamily:
-                                                                        AppResource.Fonts.semiBold,
-                                                                    fontSize: 14,
-                                                                    color: AppColor.red,
-                                                                }}>{`(*)`}</Text>
-                                                        </View>
-                                                        <TouchableOpacity
-                                                            onPress={() => {
-                                                                actionSheetRef.current?.show();
-                                                            }}>
+                                        {!isEditMode && (
+                                            <FastField name="plantOrder">
+                                                {({ field, form, meta }) => (
+                                                    <View
+                                                        style={{
+                                                            ...GlobalStyle.Margin.bottom(),
+                                                        }}>
+                                                        <View>
                                                             <View
                                                                 style={{
                                                                     display: 'flex',
                                                                     flexDirection: 'row',
-                                                                    justifyContent: 'space-between',
-                                                                    backgroundColor: '#F3F5F8',
-                                                                    paddingHorizontal: 10,
-                                                                    paddingVertical: 13,
-                                                                    borderRadius: 10,
+                                                                    marginBottom: 6,
                                                                 }}>
                                                                 <Text
                                                                     style={{
+                                                                        fontFamily:
+                                                                            AppResource.Fonts
+                                                                                .semiBold,
+                                                                        fontSize: 14,
                                                                         color: AppColor.grey80,
                                                                     }}>
-                                                                    {formikProps.getFieldProps(
-                                                                        'plantOrder',
-                                                                    ).value
-                                                                        ? formikProps.getFieldProps(
-                                                                              'plantOrder',
-                                                                          ).value
-                                                                        : 'chọn chân tưới'}
+                                                                    Chân tưới{' '}
                                                                 </Text>
-                                                                <Entypo
-                                                                    name="chevron-down"
-                                                                    size={20}
-                                                                    color="#00b4d8"
-                                                                />
+                                                                <Text
+                                                                    style={{
+                                                                        fontFamily:
+                                                                            AppResource.Fonts
+                                                                                .semiBold,
+                                                                        fontSize: 14,
+                                                                        color: AppColor.red,
+                                                                    }}>{`(*)`}</Text>
                                                             </View>
-                                                        </TouchableOpacity>
+                                                            <TouchableOpacity
+                                                                onPress={() => {
+                                                                    actionSheetRef.current?.show();
+                                                                }}>
+                                                                <View
+                                                                    style={{
+                                                                        display: 'flex',
+                                                                        flexDirection: 'row',
+                                                                        justifyContent:
+                                                                            'space-between',
+                                                                        backgroundColor: '#F3F5F8',
+                                                                        paddingHorizontal: 10,
+                                                                        paddingVertical: 13,
+                                                                        borderRadius: 10,
+                                                                    }}>
+                                                                    <Text
+                                                                        style={{
+                                                                            color: AppColor.grey80,
+                                                                        }}>
+                                                                        {formikProps.getFieldProps(
+                                                                            'plantOrder',
+                                                                        ).value
+                                                                            ? formikProps.getFieldProps(
+                                                                                  'plantOrder',
+                                                                              ).value
+                                                                            : 'chọn chân tưới'}
+                                                                    </Text>
+                                                                    <Entypo
+                                                                        name="chevron-down"
+                                                                        size={20}
+                                                                        color="#00b4d8"
+                                                                    />
+                                                                </View>
+                                                            </TouchableOpacity>
+                                                        </View>
                                                     </View>
-                                                </View>
-                                            )}
-                                        </FastField>
+                                                )}
+                                            </FastField>
+                                        )}
 
                                         {/* plantId */}
                                         {/* {!isEditMode && (

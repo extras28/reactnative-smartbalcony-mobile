@@ -57,7 +57,7 @@ function DashboardHomeScreen(props) {
             const { result } = res.data;
             if (result === 'success') {
                 Utils.toast({
-                    message: t('Cập nhật ban công thành công'),
+                    message: t('Xóa ban công thành công'),
                 });
                 dispatch(thunkGetListBalcony({}));
                 setShowingModalDeleteBalcony(false);
@@ -193,6 +193,7 @@ function DashboardHomeScreen(props) {
                     handleDeleteBalcony();
                     setSelectedBalconyItem(null);
                 }}
+                title="Xóa ban công"
             />
         </BaseScreenView>
     );

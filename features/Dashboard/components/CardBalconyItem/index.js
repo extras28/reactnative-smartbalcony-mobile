@@ -107,7 +107,7 @@ function CardBalconyItem(props) {
                                 setShowDropdown(false);
                             }}>
                             <MaterialCommunityIcons name="pencil" size={25} color={AppColor.blue} />
-                            <Text style={{ marginLeft: 10 }}>Chỉnh sửa</Text>
+                            <Text style={{ marginLeft: 10, color: AppColor.black }}>Chỉnh sửa</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={{
@@ -126,7 +126,7 @@ function CardBalconyItem(props) {
                                 size={25}
                                 color={AppColor.red}
                             />
-                            <Text style={{ marginLeft: 10 }}>Xóa</Text>
+                            <Text style={{ marginLeft: 10, color: AppColor.black }}>Xóa</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -159,7 +159,7 @@ function CardBalconyItem(props) {
                                     size={25}
                                     color={AppColor.fireEngineRed}
                                 />
-                                <Text> {temperature} °C</Text>
+                                <Text style={{ color: AppColor.black }}> {temperature} °C</Text>
                             </View>
                             <View
                                 style={{
@@ -168,7 +168,7 @@ function CardBalconyItem(props) {
                                     alignItems: 'center',
                                 }}>
                                 <Ionicons name="water" size={25} color={AppColor.dodgerblue} />
-                                <Text> {humidity} %</Text>
+                                <Text style={{ color: AppColor.black }}> {humidity} %</Text>
                             </View>
                         </View>
                     </Card.Content>

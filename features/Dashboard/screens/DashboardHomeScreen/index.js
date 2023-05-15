@@ -104,7 +104,7 @@ function DashboardHomeScreen(props) {
                             flexDirection: 'row',
                             paddingHorizontal: 20,
                         }}>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             onPress={() => {
                                 console.log('user');
                             }}>
@@ -113,8 +113,10 @@ function DashboardHomeScreen(props) {
                                 size={20}
                                 color={AppColor.slategray}
                             />
-                        </TouchableOpacity>
-                        <Text style={{ fontSize: 20, color: AppColor.slategray }}>Ban công</Text>
+                        </TouchableOpacity> */}
+                        <Text style={{ fontSize: 20, color: AppColor.black, fontWeight: '600' }}>
+                            Ban công
+                        </Text>
                         <TouchableOpacity
                             onPress={() => {
                                 setShowingModalEditBalcony(true);

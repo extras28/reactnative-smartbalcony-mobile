@@ -7,6 +7,9 @@ import _ from 'lodash';
 import moment from 'moment';
 import 'moment/locale/vi';
 import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions';
+
+// import mqtt from 'mqtt';
+// const broker = 'mqtt://broker.mqttdashboard.com:1883';
 moment.locale('vi');
 
 const Utils = {
@@ -248,6 +251,28 @@ const Utils = {
             });
         }
     },
+
+    // const topic = 'DUNGNA';
+
+    // connectMQTT: topic => {
+    //     try {
+    //         const client = mqtt.connect(broker, options);
+    //         console.log('MQTT connected!');
+    //         client.on('connect', () => {
+    //             client.subscribe(topic);
+    //         });
+    //         client.on('message', (tp, msg) => {
+    //             var data = JSON.parse(msg);
+    //             // var data = JSON.stringify(msg)
+
+    //             console.log('Received MQTT msg:', data);
+    //             // updateData(data)
+    //             // updateData(data);
+    //         });
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // },
 };
 
 export default Utils;

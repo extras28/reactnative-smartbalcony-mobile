@@ -124,7 +124,7 @@ function CardPlantItem(props) {
                             setShowDropdown(false);
                         }}>
                         <MaterialCommunityIcons name="pencil" size={25} color={AppColor.blue} />
-                        <Text style={{ marginLeft: 10, color: AppColor.darkgray }}>Chỉnh sửa</Text>
+                        <Text style={{ marginLeft: 10, color: AppColor.black }}>Chỉnh sửa</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{
@@ -143,7 +143,7 @@ function CardPlantItem(props) {
                             size={25}
                             color={AppColor.red}
                         />
-                        <Text style={{ marginLeft: 10, color: AppColor.darkgray }}>Xóa</Text>
+                        <Text style={{ marginLeft: 10, color: AppColor.black }}>Xóa</Text>
                     </TouchableOpacity>
                 </View>
             </View>

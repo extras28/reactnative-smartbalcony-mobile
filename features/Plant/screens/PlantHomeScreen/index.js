@@ -12,12 +12,12 @@ import {
 import BaseScreenView from 'general/components/BaseScreenView';
 import AppResource from 'general/constants/AppResource';
 import AntDesignIcon from 'react-native-vector-icons/dist/AntDesign';
-import FontAwesome5Icon from 'react-native-vector-icons/dist/FontAwesome5';
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 import CardPlantItem from 'features/Plant/components/CardPlantItem';
 import { thunkGetListPlant, thunkGetPlantDetail } from 'features/Plant/plantSlice';
 import Global from 'general/constants/Global';
-import NavigationHelper from 'general/helpers/NavigationHelper';
+import NavigationHelper, { navigationRef } from 'general/helpers/NavigationHelper';
 import AppData from 'general/constants/AppData';
 import ModalEditPlant from 'features/Plant/components/ModalEditPlant';
 import ModalDeleteBalcony from 'features/Dashboard/components/ModalDeleteBalcony';
@@ -92,17 +92,13 @@ function PlantHomeScreen(props) {
                             flexDirection: 'row',
                             paddingHorizontal: 20,
                         }}>
-                        {/* <TouchableOpacity
+                        <TouchableOpacity
                             onPress={() => {
-                                console.log('user');
+                                navigationRef.goBack();
                             }}>
-                            <FontAwesome5Icon
-                                name="user-alt"
-                                size={20}
-                                color={AppColor.slategray}
-                            />
-                        </TouchableOpacity> */}
-                        <Text style={{ fontSize: 20, color: AppColor.slategray }}>
+                            <Ionicons name="chevron-back-circle" size={30} color={AppColor.white} />
+                        </TouchableOpacity>
+                        <Text style={{ fontSize: 20, color: AppColor.black, fontWeight: '600' }}>
                             {Global.balconyItem?.name}
                         </Text>
                         <TouchableOpacity
@@ -180,7 +176,7 @@ function PlantHomeScreen(props) {
                     handleDeletePlant();
                     setSelectedPlantItem(null);
                 }}
-                title="Xóa ban công"
+                title="Xóa cây"
                 isBalcony={false}
             />
         </BaseScreenView>

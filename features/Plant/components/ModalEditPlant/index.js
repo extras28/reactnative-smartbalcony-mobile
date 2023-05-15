@@ -404,7 +404,9 @@ function ModalEditPlant(props) {
                                                             );
                                                             actionSheetRef.current?.hide();
                                                         }}>
-                                                        <Text>{item}</Text>
+                                                        <Text style={{ color: AppColor.black }}>
+                                                            {item}
+                                                        </Text>
                                                     </TouchableOpacity>
                                                 );
                                             },

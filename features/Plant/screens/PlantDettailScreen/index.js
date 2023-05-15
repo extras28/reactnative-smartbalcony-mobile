@@ -7,6 +7,7 @@ import BaseScreenView from 'general/components/BaseScreenView';
 import AppColor from 'general/constants/AppColor';
 import AppData from 'general/constants/AppData';
 import AppResource from 'general/constants/AppResource';
+import { navigationRef } from 'general/helpers/NavigationHelper';
 import Utils from 'general/utils/Utils';
 import React, { useEffect, useRef, useState } from 'react';
 import {
@@ -21,6 +22,7 @@ import {
 } from 'react-native';
 import ActionSheet from 'react-native-actions-sheet';
 import Entypo from 'react-native-vector-icons/dist/Entypo';
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 
 PlantDetailScreen.propTypes = {};
@@ -154,12 +156,32 @@ function PlantDetailScreen(props) {
                                     display: 'flex',
                                     justifyContent: 'space-around',
                                     alignItems: 'center',
-                                    height: 600,
+                                    height: 500,
                                     paddingHorizontal: 30,
                                 }}>
-                                <Text style={{ fontSize: 20, color: '#000' }}>
-                                    {plantDetail?.name}
-                                </Text>
+                                <View
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                        width: '100%',
+                                    }}>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            navigationRef.goBack();
+                                        }}>
+                                        <Ionicons
+                                            name="chevron-back-circle"
+                                            size={30}
+                                            color={AppColor.white}
+                                        />
+                                    </TouchableOpacity>
+                                    <Text
+                                        style={{ fontSize: 20, color: '#000', fontWeight: '600' }}>
+                                        {plantDetail?.name}
+                                    </Text>
+                                </View>
                                 <GradientBorderView
                                     gradientProps={{
                                         colors: ['#34a0a4', '#b5e48c'],
@@ -205,9 +227,12 @@ function PlantDetailScreen(props) {
                                             alignItems: 'center',
                                         }}>
                                         <Entypo name="water" size={40} color="#00b4d8" />
-                                        <Text style={{ fontWeight: '700', fontSize: 30 }}>{`${
-                                            plantDetail?.soilMoisture ?? 0
-                                        } %`}</Text>
+                                        <Text
+                                            style={{
+                                                fontWeight: '700',
+                                                fontSize: 30,
+                                                color: AppColor.blue,
+                                            }}>{`${plantDetail?.soilMoisture ?? 0} %`}</Text>
                                     </View>
                                 </GradientBorderView>
                                 <View style={{ display: 'flex', flexDirection: 'row' }}>
@@ -232,7 +257,11 @@ function PlantDetailScreen(props) {
                                             actionSheetRef.current?.show();
                                         }}>
                                         <Text style={{ color: AppColor.crimson }}>
-                                            {`${breakpoint ? breakpoint + '%' : 'chọn'}`}{' '}
+                                            {`${
+                                                breakpoint !== null && breakpoint !== undefined
+                                                    ? breakpoint + '%'
+                                                    : 'chọn'
+                                            }`}{' '}
                                         </Text>
                                     </TouchableOpacity>
                                 }
@@ -272,7 +301,7 @@ function PlantDetailScreen(props) {
                                     setBreakpoint(item);
                                     handleSetBreakpoint(item);
                                 }}>
-                                <Text>{item + '%'}</Text>
+                                <Text style={{ color: AppColor.black }}>{item + '%'}</Text>
                             </TouchableOpacity>
                         );
                     })}

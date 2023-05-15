@@ -25,6 +25,7 @@ import DashboardHomeScreen from './features/Dashboard/screens/DashboardHomeScree
 import AppData from './general/constants/AppData';
 import PlantHomeScreen from 'features/Plant/screens/PlantHomeScreen';
 import PlantDetailScreen from 'features/Plant/screens/PlantDettailScreen';
+import DataCommonListener from 'general/listeners/DataCommonListener';
 
 const Stack = createStackNavigator();
 
@@ -52,7 +53,7 @@ function RootComponent() {
     return (
         <>
             <ScaleToast toastRef={ScaleToastRef} />
-
+            {/* <DataCommonListener /> */}
             <AppLoading />
             {/* <AlertDialog alertRef={alertRef} /> */}
         </>

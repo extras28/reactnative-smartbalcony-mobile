@@ -53,7 +53,7 @@ function RootComponent() {
     return (
         <>
             <ScaleToast toastRef={ScaleToastRef} />
-            {/* <DataCommonListener /> */}
+            <DataCommonListener />
             <AppLoading />
             {/* <AlertDialog alertRef={alertRef} /> */}
         </>

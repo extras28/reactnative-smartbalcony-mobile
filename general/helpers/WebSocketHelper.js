@@ -18,8 +18,8 @@ class WebsocketHelper {
 
     initWebsocket() {
         // console.log(AppConfigs.wsUrl);
-        this.wsClient = new W3CWebSocket('wss://smart-balcony.onrender.com', '');
-        // this.wsClient = new W3CWebSocket('ws://localhost:8000', '');
+        this.wsClient = new W3CWebSocket('wss://wattering-system.onrender.com/', '');
+        // this.wsClient = new W3CWebSocket('ws://127.0.0.1:8000', '');
 
         this.wsClient.onerror = () => {
             console.log(`${sTag} connection error`);
@@ -37,12 +37,15 @@ class WebsocketHelper {
 
         this.wsClient.onmessage = e => {
             const data = e.data;
+            console.log(e);
             if (typeof data === 'string') {
                 try {
                     this.processReceivedMessage(JSON.parse(data));
                 } catch (error) {}
             }
         };
+
+        // this.wsClient.
     }
 
     // auto reconnect websocket
@@ -64,6 +67,16 @@ class WebsocketHelper {
 
         if (data) {
             console.log({ data });
+        }
+    }
+
+    receiveMqttData() {
+        if (this.wsClient.readyState === 1) {
+            const data = {
+                state: 1,
+            };
+
+            this.wsClient.send(JSON.stringify(data));
         }
     }
 }

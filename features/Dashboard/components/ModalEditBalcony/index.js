@@ -256,7 +256,7 @@ function ModalEditBalcony(props) {
                                                         onChange={value => {
                                                             form.setFieldValue(field.name, value);
                                                         }}
-                                                        onFocus={() => {
+                                                        onBlur={() => {
                                                             form.setFieldTouched(field.name, true);
                                                         }}
                                                         enableCheckValid
@@ -287,7 +287,7 @@ function ModalEditBalcony(props) {
                                                                     value,
                                                                 );
                                                             }}
-                                                            onFocus={() => {
+                                                            onBlur={() => {
                                                                 form.setFieldTouched(
                                                                     field.name,
                                                                     true,

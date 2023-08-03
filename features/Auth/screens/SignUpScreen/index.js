@@ -136,7 +136,7 @@ function SignUpScreen(props) {
                                                         onChange={value => {
                                                             form.setFieldValue(field.name, value);
                                                         }}
-                                                        onFocus={() => {
+                                                        onBlur={() => {
                                                             form.setFieldTouched(field.name, true);
                                                         }}
                                                         enableCheckValid
@@ -161,7 +161,7 @@ function SignUpScreen(props) {
                                                         onChange={value => {
                                                             form.setFieldValue(field.name, value);
                                                         }}
-                                                        onFocus={() => {
+                                                        onBlur={() => {
                                                             form.setFieldTouched(field.name, true);
                                                         }}
                                                         enableCheckValid
@@ -186,7 +186,7 @@ function SignUpScreen(props) {
                                                         onChange={value => {
                                                             form.setFieldValue(field.name, value);
                                                         }}
-                                                        onFocus={() => {
+                                                        onBlur={() => {
                                                             form.setFieldTouched(field.name, true);
                                                         }}
                                                         enableCheckValid
@@ -211,7 +211,7 @@ function SignUpScreen(props) {
                                                         onChange={value => {
                                                             form.setFieldValue(field.name, value);
                                                         }}
-                                                        onFocus={() => {
+                                                        onBlur={() => {
                                                             form.setFieldTouched(field.name, true);
                                                         }}
                                                         enableCheckValid

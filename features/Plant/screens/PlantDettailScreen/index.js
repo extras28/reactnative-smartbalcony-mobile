@@ -24,6 +24,7 @@ import ActionSheet from 'react-native-actions-sheet';
 import Entypo from 'react-native-vector-icons/dist/Entypo';
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
+import wsHelperInstance from 'general/helpers/WebSocketHelper';
 
 PlantDetailScreen.propTypes = {};
 

@@ -159,7 +159,7 @@ function LoginScreen(props) {
                                                         onChange={value => {
                                                             form.setFieldValue(field.name, value);
                                                         }}
-                                                        onFocus={() => {
+                                                        onBlur={() => {
                                                             form.setFieldTouched(field.name, true);
                                                         }}
                                                         enableCheckValid
@@ -184,7 +184,7 @@ function LoginScreen(props) {
                                                         onChange={value => {
                                                             form.setFieldValue(field.name, value);
                                                         }}
-                                                        onFocus={() => {
+                                                        onBlur={() => {
                                                             form.setFieldTouched(field.name, true);
                                                         }}
                                                         enableCheckValid

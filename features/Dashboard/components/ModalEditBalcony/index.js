@@ -120,7 +120,7 @@ function ModalEditBalcony(props) {
                                     console.log(res);
                                     if (result === 'success') {
                                         Utils.toast({
-                                            message: t('Cập nhật ban công thành công'),
+                                            message: t('Cập nhật vườn thành công'),
                                         });
                                         dispatch(thunkGetListBalcony({}));
                                         handleClose();
@@ -131,7 +131,7 @@ function ModalEditBalcony(props) {
                                     const { result, balcony } = res.data;
                                     if (result === 'success') {
                                         Utils.toast({
-                                            message: t('Thêm ban công thành công'),
+                                            message: t('Thêm vườn thành công'),
                                         });
                                         dispatch(thunkGetListBalcony({}));
                                         handleClose();
@@ -154,7 +154,7 @@ function ModalEditBalcony(props) {
                                         borderBottomWidth: 0.5,
                                     }}>
                                     <Text style={{ fontWeight: '700', color: AppColor.black }}>
-                                        {isEditMode ? 'Chỉnh sửa ban công' : 'Thêm ban công'}
+                                        {isEditMode ? 'Chỉnh sửa vườn' : 'Thêm vườn'}
                                     </Text>
                                     {/* <FontAwesome name="close" size={20} color={AppColor.black} /> */}
                                 </View>
@@ -250,8 +250,8 @@ function ModalEditBalcony(props) {
                                                         ...GlobalStyle.Margin.bottom(),
                                                     }}>
                                                     <DefaultTextInput
-                                                        label="Tên ban công"
-                                                        placeholder={t('Nhập tên ban công')}
+                                                        label="Tên vườn"
+                                                        placeholder={t('Nhập tên vườn')}
                                                         value={field.value}
                                                         onChange={value => {
                                                             form.setFieldValue(field.name, value);

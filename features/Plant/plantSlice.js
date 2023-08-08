@@ -52,6 +52,16 @@ const plantSlice = createSlice({
             console.log(action.payload);
             state.listIsWatering[order] = status;
         },
+        setCurrentHumidity: (state, action) => {
+            const { sensorArr, balconyId } = action.payload;
+            if (balconyId === state.plantDetail.balconyId) {
+                const order =
+                    parseInt(state.plantDetail?.plantId.slice(17, 19)) > 9
+                        ? parseInt(state.plantDetail?.plantId.slice(-2))
+                        : parseInt(state.plantDetail?.plantId.slice(-1));
+                state.plantDetail.soilMoisture = sensorArr[order];
+            }
+        },
     },
     extraReducers: {
         [thunkGetListPlant.pending]: (state, action) => {
@@ -85,6 +95,6 @@ const plantSlice = createSlice({
 });
 
 const { reducer, actions } = plantSlice;
-export const { toggleAutoMode, setListIsWatering } = actions;
+export const { toggleAutoMode, setListIsWatering, setCurrentHumidity } = actions;
 
 export default reducer;

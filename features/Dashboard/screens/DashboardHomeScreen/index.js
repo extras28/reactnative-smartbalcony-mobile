@@ -57,7 +57,7 @@ function DashboardHomeScreen(props) {
             const { result } = res.data;
             if (result === 'success') {
                 Utils.toast({
-                    message: t('Xóa ban công thành công'),
+                    message: t('Xóa vườn thành công'),
                 });
                 dispatch(thunkGetListBalcony({}));
                 setShowingModalDeleteBalcony(false);
@@ -115,7 +115,7 @@ function DashboardHomeScreen(props) {
                             />
                         </TouchableOpacity> */}
                         <Text style={{ fontSize: 20, color: AppColor.black, fontWeight: '600' }}>
-                            Ban công
+                            Vườn
                         </Text>
                         <TouchableOpacity
                             onPress={() => {
@@ -195,7 +195,7 @@ function DashboardHomeScreen(props) {
                     handleDeleteBalcony();
                     setSelectedBalconyItem(null);
                 }}
-                title="Xóa ban công"
+                title="Xóa vườn"
             />
         </BaseScreenView>
     );

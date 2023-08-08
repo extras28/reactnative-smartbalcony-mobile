@@ -118,7 +118,7 @@ function ModalEditPlant(props) {
                                     console.log(res);
                                     if (result === 'success') {
                                         Utils.toast({
-                                            message: t('Cập nhật thông tin cây thành công'),
+                                            message: t('Cập nhật thông tin vòi thành công'),
                                         });
                                         dispatch(
                                             thunkGetListPlant({
@@ -134,7 +134,7 @@ function ModalEditPlant(props) {
                                     const { result, plant } = res.data;
                                     if (result === 'success') {
                                         Utils.toast({
-                                            message: t('Thêm cây thành công'),
+                                            message: t('Thêm vòi thành công'),
                                         });
                                         dispatch(
                                             thunkGetListPlant({
@@ -161,7 +161,7 @@ function ModalEditPlant(props) {
                                         borderBottomWidth: 0.5,
                                     }}>
                                     <Text style={{ fontWeight: '700', color: AppColor.black }}>
-                                        {isEditMode ? 'Chỉnh sửa cây' : 'Thêm cây'}
+                                        {isEditMode ? 'Chỉnh sửa vòi' : 'Thêm vòi'}
                                     </Text>
                                 </View>
                                 {/* modal body */}
@@ -209,8 +209,8 @@ function ModalEditPlant(props) {
                                                         ...GlobalStyle.Margin.bottom(),
                                                     }}>
                                                     <DefaultTextInput
-                                                        label="Tên cây"
-                                                        placeholder={t('Nhập tên cây')}
+                                                        label="Tên vòi"
+                                                        placeholder={t('Nhập tên vòi')}
                                                         value={field.value}
                                                         onChange={value => {
                                                             form.setFieldValue(field.name, value);

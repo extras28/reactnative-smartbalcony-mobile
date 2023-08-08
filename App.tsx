@@ -12,7 +12,7 @@ import LaunchScreen from 'features/LaunchScreen/index';
 import AppLoading from 'general/components/AppLoading/index';
 import ScaleToast, { ScaleToastRef } from 'general/components/AppToast/index';
 import { navigationRef } from 'general/helpers/NavigationHelper';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -26,10 +26,22 @@ import AppData from './general/constants/AppData';
 import PlantHomeScreen from 'features/Plant/screens/PlantHomeScreen';
 import PlantDetailScreen from 'features/Plant/screens/PlantDettailScreen';
 import DataCommonListener from 'general/listeners/DataCommonListener';
+import { injectStore } from 'general/helpers/WebSocketHelper';
 
 const Stack = createStackNavigator();
 
+const sTag = '[App.js]';
+
 function App(): JSX.Element {
+    // MARK: --- Hooks ---
+    useEffect(() => {
+        console.log(`${sTag} did load`);
+        injectStore(store);
+
+        return () => {
+            console.log(`${sTag} will dismiss`);
+        };
+    }, []);
     return (
         <SafeAreaProvider>
             <Provider store={store}>

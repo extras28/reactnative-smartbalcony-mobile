@@ -268,7 +268,7 @@ function PlantDetailScreen(props) {
                                 }
                             />
                             <CardPlantAction
-                                title="Tưới cây"
+                                title="Tưới vòi"
                                 disabled={isEnabled}
                                 additionalElement={
                                     <Switch

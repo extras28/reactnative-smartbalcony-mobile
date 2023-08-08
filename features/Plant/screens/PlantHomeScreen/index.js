@@ -48,7 +48,7 @@ function PlantHomeScreen(props) {
             const { result } = res.data;
             if (result === 'success') {
                 Utils.toast({
-                    message: t('Xóa cây thành công'),
+                    message: t('Xóa vòi thành công'),
                 });
                 dispatch(
                     thunkGetListPlant({
@@ -176,7 +176,7 @@ function PlantHomeScreen(props) {
                     handleDeletePlant();
                     setSelectedPlantItem(null);
                 }}
-                title="Xóa cây"
+                title="Xóa vòi"
                 isBalcony={false}
             />
         </BaseScreenView>

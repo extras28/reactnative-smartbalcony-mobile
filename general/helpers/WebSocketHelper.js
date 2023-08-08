@@ -1,3 +1,5 @@
+import { setCurrentHumidity } from 'features/Plant/plantSlice';
+
 // import store from 'app/store';
 let store;
 
@@ -37,7 +39,7 @@ class WebsocketHelper {
 
         this.wsClient.onmessage = e => {
             const data = e.data;
-            console.log(e);
+
             if (typeof data === 'string') {
                 try {
                     this.processReceivedMessage(JSON.parse(data));
@@ -62,11 +64,14 @@ class WebsocketHelper {
     // MARK: --- Utils functions ---
     processReceivedMessage(data) {
         try {
-            console.log(`${sTag} received: ${JSON.stringify(data)}`);
-        } catch (error) {}
+            store.dispatch(setCurrentHumidity(data));
+            // console.log(`${sTag} received: ${JSON.stringify(data)}`);
+        } catch (error) {
+            console.log(`${sTag} received error: ${error.message}`);
+        }
 
         if (data) {
-            console.log({ data });
+            store?.dispatch(setCurrentHumidity(data));
         }
     }
 

@@ -133,13 +133,13 @@ function ModalDeleteBalcony(props) {
                                     style={{
                                         color: AppColor.black,
                                         textAlign: 'center',
-                                    }}>{`Bạn có chắc muốn xóa ban công ${balconyItem?.selectedBalconyItem?.name} ?`}</Text>
+                                    }}>{`Bạn có chắc muốn xóa vườn ${balconyItem?.selectedBalconyItem?.name} ?`}</Text>
                             ) : (
                                 <Text
                                     style={{
                                         color: AppColor.black,
                                         textAlign: 'center',
-                                    }}>{`Bạn có chắc muốn xóa cây ${balconyItem?.name} ?`}</Text>
+                                    }}>{`Bạn có chắc muốn xóa vòi ${balconyItem?.name} ?`}</Text>
                             )}
                         </View>
 
